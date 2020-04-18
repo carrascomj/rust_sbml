@@ -90,6 +90,7 @@ pub fn parse_document(doc: &str) -> Result<Model, roxmltree::Error> {
                 .collect::<String>(),
         })
         .collect();
+    // Reactions
     Ok(Model {
         model_units,
         parameters,
