@@ -3,7 +3,7 @@ use base_types::{
     Compartment, InitialAssignment, Model, ModelUnits, Parameter, Specie, Unit, UnitSId,
 };
 use std::collections::HashMap;
-mod mathml;
+use mathml;
 fn main() {
     let doc = include_str!("rules.xml");
     let res = roxmltree::Document::parse(doc).unwrap();
