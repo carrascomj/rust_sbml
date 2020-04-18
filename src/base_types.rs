@@ -198,6 +198,6 @@ pub enum Rule<'a> {
 }
 #[derive(Debug, PartialEq)]
 pub struct Constraint {
-    pub(crate) math: Option<MathNode>,
-    pub(crate) message: String,
+    pub math: Option<MathNode>,
+    pub message: String,
 }

@@ -1,11 +1,11 @@
 mod base_types;
-use crate::base_types::Constraint;
+
 pub use base_types::{
-    Compartment, InitialAssignment, Model, ModelUnits, Parameter, Specie, Unit, UnitSId, UnitSidRef,
+    Compartment, Constraint, InitialAssignment, Model, ModelUnits, Parameter, Specie, Unit,
+    UnitSId, UnitSidRef,
 };
 use std::collections::HashMap;
-#[cfg(test)]
-mod tests;
+
 pub fn parse_document(doc: &str) -> Result<Model, roxmltree::Error> {
     let res = roxmltree::Document::parse(doc)?;
     let raw_model = res

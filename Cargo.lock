@@ -17,9 +17,9 @@ checksum = "f8aac770f1885fd7e387acedd76065302551364496e46b3dd00860b2f8359b9d"
 
 [[package]]
 name = "mathml"
-version = "0.4.2"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2eb09adef1401f57ae7f486c88abaff9ee65ef44a56e6ce27cd88953e252d009"
+checksum = "5179dfc7810476e42aae494877d6de018d73a47b29864e7c16b245c1ee1e4cb9"
 dependencies = [
  "approx",
  "roxmltree",
@@ -66,7 +66,7 @@ dependencies = [
 
 [[package]]
 name = "sbml"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "mathml",
  "roxmltree",
