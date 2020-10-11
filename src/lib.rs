@@ -1,8 +1,8 @@
 mod base_types;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, Model, ModelUnits, Parameter, Specie, Unit,
-    UnitSId, UnitSidRef,
+    Compartment, Constraint, InitialAssignment, Model, ModelUnits, Parameter, Reaction, Specie,
+    Unit, UnitSId, UnitSidRef,
 };
 use std::collections::HashMap;
 
@@ -69,6 +69,12 @@ pub fn parse_document(doc: &str) -> Result<Model, roxmltree::Error> {
             )
         })
         .collect();
+    // Initial assignments
+    let reactions: HashMap<String, Reaction> = raw_model
+        .descendants()
+        .filter(|n| n.tag_name().name() == "reaction")
+        .map(|n| (n.attribute("id").unwrap().to_owned(), Reaction::from(n)))
+        .collect();
 
     // Constraints
     let constraints: Vec<Constraint> = raw_model
@@ -96,6 +102,7 @@ pub fn parse_document(doc: &str) -> Result<Model, roxmltree::Error> {
         parameters,
         initial_assignments,
         species,
+        reactions,
         compartments,
         unit_definitions,
         constraints,

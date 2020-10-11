@@ -5,6 +5,14 @@ use roxmltree::Node;
 use serde_derive::Deserialize;
 use serde_plain;
 use std::collections::HashMap;
+
+fn unwrap_optional_str(value: Node<'_, '_>, attribute: &'_ str) -> Option<String> {
+    match value.attribute(attribute) {
+        Some(s) => Some(s.to_owned()),
+        _ => None,
+    }
+}
+
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum UnitSidRef {
     SIUnit(UnitSId),
@@ -156,6 +164,31 @@ impl<'a> From<Node<'a, 'a>> for Specie {
     }
 }
 #[derive(Debug, PartialEq)]
+pub struct SpeciesReference {
+    pub species: String,
+    pub constant: bool,
+    pub sbo_term: Option<String>,
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub stoichiometry: Option<f64>,
+}
+impl<'a> From<Node<'a, 'a>> for SpeciesReference {
+    fn from(value: Node<'a, 'a>) -> Self {
+        SpeciesReference {
+            species: value.attribute("species").unwrap().to_string(),
+            constant: value.attribute("constant").unwrap().parse().unwrap(),
+            sbo_term: unwrap_optional_str(value, "sboTerm"),
+            id: unwrap_optional_str(value, "id"),
+            name: unwrap_optional_str(value, "name"),
+            stoichiometry: match value.attribute("stoichiometry") {
+                Some(s) => Some(s.parse().unwrap()),
+                None => None,
+            },
+        }
+    }
+}
+
+#[derive(Debug, PartialEq)]
 pub struct Parameter {
     value: Option<f64>,
     units: Option<UnitSidRef>,
@@ -174,6 +207,68 @@ impl<'a> From<Node<'a, 'a>> for Parameter {
 pub struct InitialAssignment {
     pub symbol: String,
 }
+#[derive(Debug, PartialEq)]
+pub struct ListOfSpecies(pub Vec<SpeciesReference>);
+impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
+    fn from(value: Node<'a, 'a>) -> Self {
+        ListOfSpecies(
+            value
+                .document()
+                .descendants()
+                .filter(|n| n.tag_name().name() == "speciesReference")
+                .map(|n| SpeciesReference::from(n))
+                .collect(),
+        )
+    }
+}
+
+/// Reaction object as defined by SBML
+/// TODO: implement KineticLaw
+///
+/// # Example
+///
+/// ```
+/// use roxmltree;
+/// use sbml::Reaction;
+///
+/// let reactions: Vec<Reaction> = roxmltree::Document::parse(
+///     "<model id='example'><listOfReactions>
+///         <reaction id='J1' reversible='false'>
+///             <listOfReactants>
+///                 <speciesReference species='X0' stoichiometry='2' constant='true'/>
+///     </listOfReactants></reaction></listOfReactions></model>",
+/// )
+/// .unwrap()
+/// .descendants()
+/// .filter(|n| n.tag_name().name() == "reaction")
+/// .map(|n| Reaction::from(n))
+/// .collect();
+/// assert!(
+///     reactions.iter().any(|reaction| reaction
+///         .list_of_species
+///         .0
+///         .iter()
+///         .any(|specref| specref.species == "X0"))
+/// );
+/// ```
+#[derive(Debug, PartialEq)]
+pub struct Reaction {
+    pub list_of_species: ListOfSpecies,
+    pub reversible: bool,
+    pub compartment: Option<String>,
+    pub sbo_term: Option<String>,
+}
+impl<'a> From<Node<'a, 'a>> for Reaction {
+    fn from(value: Node<'a, 'a>) -> Self {
+        Reaction {
+            list_of_species: ListOfSpecies::from(value),
+            reversible: value.attribute("reversible").unwrap().parse().unwrap(),
+            compartment: unwrap_optional_str(value, "compartment"),
+            sbo_term: unwrap_optional_str(value, "sboTerm"),
+        }
+    }
+}
+
 type HL<T> = HashMap<String, T>;
 #[derive(Debug, Default, PartialEq)]
 pub struct Model {
@@ -181,6 +276,7 @@ pub struct Model {
     pub initial_assignments: HL<InitialAssignment>,
     pub parameters: HL<Parameter>,
     pub species: HL<Specie>,
+    pub reactions: HL<Reaction>,
     pub compartments: HL<Compartment>,
     pub unit_definitions: HL<HashMap<UnitSId, Unit>>,
     pub constraints: Vec<Constraint>,
