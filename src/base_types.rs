@@ -110,6 +110,8 @@ impl From<Node<'_, '_>> for Unit {
 #[derive(Debug, PartialEq)]
 pub struct Compartment {
     units: Option<UnitSidRef>,
+    id: String,
+    name: Option<String>,
     spatial_dimensions: Option<f64>,
     size: Option<f64>,
     constant: bool,
@@ -120,17 +122,22 @@ impl From<Node<'_, '_>> for Compartment {
             spatial_dimensions: value
                 .attribute("spatialDimensions")
                 .map(|p| p.parse().unwrap()),
+            id: value.attribute("id").unwrap().to_owned(),
+            name: unwrap_optional_str(value, "name"),
             size: value.attribute("size").map(|p| p.parse().unwrap()),
             constant: value.attribute("constant").unwrap().parse().unwrap(),
             units: value.attribute("units").map(|p| UnitSidRef::from(&p)),
         }
     }
 }
+
+
 #[derive(Debug, PartialEq)]
 pub struct Specie {
     compartment: String,
     initial_concentration: Option<f64>,
     initial_amount: Option<f64>,
+    id: String,
     substance_units: Option<UnitSidRef>,
     has_only_substance_units: bool,
     boundary_condition: bool,
@@ -141,6 +148,7 @@ impl<'a> From<Node<'a, 'a>> for Specie {
     fn from(value: Node<'a, 'a>) -> Self {
         Specie {
             compartment: value.attribute("compartment").unwrap().to_owned(),
+            id: value.attribute("id").unwrap().to_owned(),
             initial_concentration: value
                 .attribute("initialConcentration")
                 .map(|p| p.parse().unwrap()),
@@ -267,19 +275,6 @@ impl<'a> From<Node<'a, 'a>> for Reaction {
             sbo_term: unwrap_optional_str(value, "sboTerm"),
         }
     }
-}
-
-type HL<T> = HashMap<String, T>;
-#[derive(Debug, Default, PartialEq)]
-pub struct Model {
-    pub model_units: ModelUnits,
-    pub initial_assignments: HL<InitialAssignment>,
-    pub parameters: HL<Parameter>,
-    pub species: HL<Specie>,
-    pub reactions: HL<Reaction>,
-    pub compartments: HL<Compartment>,
-    pub unit_definitions: HL<HashMap<UnitSId, Unit>>,
-    pub constraints: Vec<Constraint>,
 }
 
 #[derive(Debug, PartialEq)]
