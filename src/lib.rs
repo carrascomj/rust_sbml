@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 pub use base_types::{
     Compartment, Constraint, InitialAssignment, ModelUnits, Parameter, Reaction, Specie, Unit,
-    UnitSId, UnitSidRef,
+    UnitSId, UnitSidRef, SpeciesReference
 };
 
 type HL<T> = HashMap<String, T>;
