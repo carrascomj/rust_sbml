@@ -250,7 +250,7 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 /// println!("{:?}", reactions);
 /// assert!(
 ///     reactions.iter().any(|reaction| reaction
-///         .list_of_species
+///         .list_of_reactants
 ///         .0
 ///         .iter()
 ///         .any(|specref| specref.species == "X0"))
@@ -258,18 +258,36 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 /// ```
 #[derive(Debug, PartialEq)]
 pub struct Reaction {
-    pub list_of_species: ListOfSpecies,
+    pub list_of_reactants: ListOfSpecies,
+    pub list_of_products: ListOfSpecies,
     pub reversible: bool,
     pub compartment: Option<String>,
     pub name: Option<String>,
     pub sbo_term: Option<String>,
+    pub lower_bound: Option<String>,
+    pub upper_bound: Option<String>,
 }
 impl<'a> From<Node<'a, 'a>> for Reaction {
     fn from(value: Node<'a, 'a>) -> Self {
         Reaction {
-            list_of_species: ListOfSpecies::from(value),
+            list_of_reactants: match value
+                .children()
+                .find(|n| n.tag_name().name() == "listOfReactants")
+            {
+                Some(n) => ListOfSpecies::from(n),
+                _ => ListOfSpecies(Vec::new()),
+            },
+            list_of_products: match value
+                .children()
+                .find(|n| n.tag_name().name() == "listOfProducts")
+            {
+                Some(n) => ListOfSpecies::from(n),
+                _ => ListOfSpecies(Vec::new()),
+            },
             reversible: value.attribute("reversible").unwrap().parse().unwrap(),
             compartment: unwrap_optional_str(value, "compartment"),
+            lower_bound: unwrap_optional_str(value, "lowerFluxBound"),
+            upper_bound: unwrap_optional_str(value, "upperFluxBound"),
             name: unwrap_optional_str(value, "name"),
             sbo_term: unwrap_optional_str(value, "sboTerm"),
         }

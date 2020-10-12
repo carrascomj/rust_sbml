@@ -196,6 +196,6 @@ mod tests {
         .map(|n| Reaction::from(n))
         .collect();
         println!("{:?}", reactions);
-        assert_eq!(reactions[1].list_of_species.0.len(), 2);
+        assert_eq!(reactions[1].list_of_reactants.0.len(), 2);
     }
 }
