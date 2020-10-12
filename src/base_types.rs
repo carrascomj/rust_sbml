@@ -1,9 +1,7 @@
 use mathml::MathNode;
-use roxmltree;
 use roxmltree::Attribute;
 use roxmltree::Node;
 use serde_derive::Deserialize;
-use serde_plain;
 use std::collections::HashMap;
 
 fn unwrap_optional_str(value: Node<'_, '_>, attribute: &'_ str) -> Option<String> {
@@ -130,7 +128,6 @@ impl From<Node<'_, '_>> for Compartment {
         }
     }
 }
-
 
 #[derive(Debug, PartialEq)]
 pub struct Specie {
@@ -281,12 +278,12 @@ impl<'a> From<Node<'a, 'a>> for Reaction {
 pub struct Function {
     math: MathNode,
 }
-#[derive(Debug, PartialEq)]
-pub enum Rule<'a> {
-    AlgebraicRule { math: MathNode },
-    AssignmentRule { math: MathNode, variable: &'a str },
-    RateRule { math: MathNode, variable: &'a str },
-}
+// #[derive(Debug, PartialEq)]
+// pub enum Rule<'a> {
+//     AlgebraicRule { math: MathNode },
+//     AssignmentRule { math: MathNode, variable: &'a str },
+//     RateRule { math: MathNode, variable: &'a str },
+// }
 #[derive(Debug, PartialEq)]
 pub struct Constraint {
     pub math: Option<MathNode>,
