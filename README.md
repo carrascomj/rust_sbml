@@ -1,12 +1,10 @@
-[![Crates.io](https://img.shields.io/crates/v/sbml.svg)](https://crates.io/crates/sbml)
-[![Documentation](https://docs.rs/sbml/badge.svg)](https://docs.rs/sbml/)
-[![Build](https://github.com/jlricon/sbml/workflows/Build/badge.svg)](https://github.com/jlricon/sbml)
-[![Codecov](https://codecov.io/github/jlricon/sbml/coverage.svg?branch=master)](https://codecov.io/gh/jlricon/sbml)
+<!-- [![Crates.io](https://img.shields.io/crates/v/sbml.svg)](https://crates.io/crates/sbml)
+[![Documentation](https://docs.rs/sbml/badge.svg)](https://docs.rs/sbml/) -->
+[![Build](https://github.com/carraascomj/rust-sbml/workflows/Build/badge.svg)](https://github.com/carraascomj/rust-sbml)
+[![Codecov](https://codecov.io/github/carrascomj/rust-sbml/coverage.svg?branch=master)](https://codecov.io/gh/carrascomj/rust-sbml)
 
 # A parser for SBML
 This is a parser for the Systems Biology Markup Language (SBML).
-
-Very early stage! I also wrote a companion MathML parser that this crate uses.
 
 ## Example
 ```rust
