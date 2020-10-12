@@ -1,6 +1,6 @@
 [![Crates.io](https://img.shields.io/crates/v/rust_sbml.svg)](https://crates.io/crates/rust_sbml)
 [![Documentation](https://docs.rs/rust_sbml/badge.svg)](https://docs.rs/rust_sbml/)
-[![Build](https://github.com/carraascomj/rust_sbml/workflows/build/badge.svg)](https://github.com/carrascomj/rust_sbml)
+[![Build](https://github.com/carrascomj/rust_sbml/workflows/build/badge.svg)](https://github.com/carrascomj/rust_sbml)
 [![Codecov](https://codecov.io/github/carrascomj/rust_sbml/coverage.svg?branch=trunk)](https://codecov.io/gh/carrascomj/rust_sbml)
 
 # A parser for SBML
