@@ -1,14 +1,49 @@
-name: Build
+name: build
 
-on: [push]
+on:
+  push:
+    # Branches that sound like default
+    branches:
+      - trunk
+      - crates-io
+    # Don't run tests, when only textfiles were modified
+    paths-ignore:
+      - "COPYRIGHT"
+      - "LICENSE-*"
+      - "**.md"
+      - "**.txt"
+  pull_request:
+    branches:
+      - master
+      - crates-io
+    paths-ignore:
+      - "COPYRIGHT"
+      - "LICENSE-*"
+      - "**.md"
+      - "**.txt"
 
 jobs:
+  rustfmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+      - uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+      - uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install Rust
