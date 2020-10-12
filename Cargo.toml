@@ -1,20 +1,19 @@
 [package]
 name = "rust_sbml"
-version = "0.2.2"
+version = "0.1.0"
 authors = ["Jorge CArrasco Muriel <carrascomurielj@gmail.com>"]
 edition = "2018"
 description = "A parser for SBML"
 license = "MIT OR Apache-2.0"
-documentation="https://docs.rs/sbml/"
-repository="https://github.com/jlricon/sbml"
-categories=["parser-implementations","parsing","science","mathematics","simulation"]
+repository="https://github.com/carrascomj/rust_sbml"
+categories=["parser-implementations","parsing","science","mathematics"]
 readme="README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 roxmltree = "0.10.1"
-serde = "1.0.106"
-serde_derive = "1.0.106"
+serde = "1.0.116"
+serde_derive = "1.0.116"
 serde_plain = "0.3.0"
 mathml = "0.4.3"
