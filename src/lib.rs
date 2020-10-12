@@ -2,8 +2,8 @@ mod base_types;
 use std::collections::HashMap;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, ModelUnits, Parameter, Reaction, Specie,
-    SpeciesReference, Unit, UnitSId, UnitSidRef,
+    Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter, Reaction,
+    Specie, SpeciesReference, Unit, UnitSId, UnitSidRef,
 };
 
 type HL<T> = HashMap<String, T>;

@@ -261,6 +261,7 @@ pub struct Reaction {
     pub list_of_species: ListOfSpecies,
     pub reversible: bool,
     pub compartment: Option<String>,
+    pub name: Option<String>,
     pub sbo_term: Option<String>,
 }
 impl<'a> From<Node<'a, 'a>> for Reaction {
@@ -269,6 +270,7 @@ impl<'a> From<Node<'a, 'a>> for Reaction {
             list_of_species: ListOfSpecies::from(value),
             reversible: value.attribute("reversible").unwrap().parse().unwrap(),
             compartment: unwrap_optional_str(value, "compartment"),
+            name: unwrap_optional_str(value, "name"),
             sbo_term: unwrap_optional_str(value, "sboTerm"),
         }
     }
