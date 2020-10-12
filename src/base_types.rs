@@ -218,7 +218,6 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
     fn from(value: Node<'a, 'a>) -> Self {
         ListOfSpecies(
             value
-                .document()
                 .descendants()
                 .filter(|n| n.tag_name().name() == "speciesReference")
                 .map(SpeciesReference::from)
@@ -248,6 +247,7 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 /// .filter(|n| n.tag_name().name() == "reaction")
 /// .map(|n| Reaction::from(n))
 /// .collect();
+/// println!("{:?}", reactions);
 /// assert!(
 ///     reactions.iter().any(|reaction| reaction
 ///         .list_of_species
