@@ -144,12 +144,12 @@ impl Model {
                 math: n
                     .descendants()
                     .filter(|n| n.tag_name().name() == "math")
-                    .nth(0)
+                    .next()
                     .map(mathml::parse_node),
                 message: n
                     .descendants()
                     .filter(|n| n.tag_name().name() == "message")
-                    .nth(0)
+                    .next()
                     .unwrap()
                     .children()
                     .map(|n| n.text().unwrap().trim().to_owned())

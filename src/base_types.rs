@@ -221,7 +221,7 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
                 .document()
                 .descendants()
                 .filter(|n| n.tag_name().name() == "speciesReference")
-                .map(|n| SpeciesReference::from(n))
+                .map(SpeciesReference::from)
                 .collect(),
         )
     }
