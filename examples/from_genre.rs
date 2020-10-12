@@ -1,4 +1,4 @@
-use sbml::parse_document;
+use rust_sbml::parse_document;
 
 fn main() {
     let file_str = std::fs::read_to_string("examples/EcoliCore.xml").unwrap();

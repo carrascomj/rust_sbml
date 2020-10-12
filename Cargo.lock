@@ -65,7 +65,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-sbml"
+name = "rust_sbml"
 version = "0.2.2"
 dependencies = [
  "mathml",

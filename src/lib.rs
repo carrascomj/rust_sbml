@@ -29,7 +29,7 @@ impl Model {
     /// # Example
     ///
     /// ```
-    /// use sbml::Model;
+    /// use rust_sbml::Model;
     /// use std::fs;
     ///
     /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
@@ -44,7 +44,7 @@ impl Model {
     /// # Example
     ///
     /// ```
-    /// use sbml::Model;
+    /// use rust_sbml::Model;
     /// use std::fs;
     ///
     /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
@@ -59,7 +59,7 @@ impl Model {
     /// # Example
     ///
     /// ```
-    /// use sbml::Model;
+    /// use rust_sbml::Model;
     /// use std::fs;
     ///
     /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();

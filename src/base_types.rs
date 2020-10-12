@@ -234,7 +234,7 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 ///
 /// ```
 /// use roxmltree;
-/// use sbml::Reaction;
+/// use rust_sbml::Reaction;
 ///
 /// let reactions: Vec<Reaction> = roxmltree::Document::parse(
 ///     "<model id='example'><listOfReactions>

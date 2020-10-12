@@ -2,7 +2,7 @@ use mathml;
 use mathml::BuiltinOp::*;
 use mathml::MathNode::*;
 use mathml::NumType::*;
-use sbml::{parse_document, Constraint, Model, ModelUnits, UnitSId, UnitSidRef};
+use rust_sbml::{parse_document, Constraint, Model, ModelUnits, UnitSId, UnitSidRef};
 use std::collections::HashMap;
 #[test]
 fn test_constraints() {
