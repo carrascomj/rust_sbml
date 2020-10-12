@@ -173,12 +173,11 @@ pub fn parse_document(doc: &str) -> Result<Model, roxmltree::Error> {
 
 #[cfg(test)]
 mod tests {
-    use roxmltree;
     use super::*;
+    use roxmltree;
 
     #[test]
     fn test_name() {
-
         let reactions: Vec<Reaction> = roxmltree::Document::parse(
             "<model id='example'><listOfReactions>
                  <reaction id='J1' reversible='false'>
