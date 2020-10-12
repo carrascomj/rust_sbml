@@ -108,8 +108,8 @@ impl From<Node<'_, '_>> for Unit {
 #[derive(Debug, PartialEq)]
 pub struct Compartment {
     units: Option<UnitSidRef>,
-    id: String,
-    name: Option<String>,
+    pub id: String,
+    pub name: Option<String>,
     spatial_dimensions: Option<f64>,
     size: Option<f64>,
     constant: bool,
@@ -131,14 +131,14 @@ impl From<Node<'_, '_>> for Compartment {
 
 #[derive(Debug, PartialEq)]
 pub struct Specie {
-    compartment: String,
+    pub compartment: String,
     initial_concentration: Option<f64>,
     initial_amount: Option<f64>,
-    id: String,
+    pub id: String,
     substance_units: Option<UnitSidRef>,
     has_only_substance_units: bool,
-    boundary_condition: bool,
-    constant: bool,
+    pub boundary_condition: bool,
+    pub constant: bool,
     conversion_factor: Option<String>,
 }
 impl<'a> From<Node<'a, 'a>> for Specie {
