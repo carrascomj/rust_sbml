@@ -143,13 +143,11 @@ impl Model {
             .map(|n| Constraint {
                 math: n
                     .descendants()
-                    .filter(|n| n.tag_name().name() == "math")
-                    .next()
+                    .find(|n| n.tag_name().name() == "math")
                     .map(mathml::parse_node),
                 message: n
                     .descendants()
-                    .filter(|n| n.tag_name().name() == "message")
-                    .next()
+                    .find(|n| n.tag_name().name() == "message")
                     .unwrap()
                     .children()
                     .map(|n| n.text().unwrap().trim().to_owned())
