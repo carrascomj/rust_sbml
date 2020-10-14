@@ -195,9 +195,9 @@ impl<'a> From<Node<'a, 'a>> for SpeciesReference {
 
 #[derive(Debug, PartialEq)]
 pub struct Parameter {
-    value: Option<f64>,
+    pub value: Option<f64>,
     units: Option<UnitSidRef>,
-    constant: bool,
+    pub constant: bool,
 }
 impl<'a> From<Node<'a, 'a>> for Parameter {
     fn from(value: Node<'a, 'a>) -> Self {
