@@ -72,3 +72,18 @@ fn test_simple() {
     };
     assert_eq!(res, expect)
 }
+
+#[test]
+fn from_genre() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = Model::parse(file_str).unwrap();
+    assert_eq!(
+        model
+            .objectives
+            .iter()
+            .map(|reac_id| reac_id.to_owned())
+            .next()
+            .unwrap(),
+        "R_BIOMASS_Ecoli_core_w_GAM"
+    );
+}
