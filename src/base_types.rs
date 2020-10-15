@@ -11,6 +11,13 @@ fn unwrap_optional_str(value: Node<'_, '_>, attribute: &'_ str) -> Option<String
     }
 }
 
+fn unwrap_optional_ns(value: Node<'_, '_>, attribute: (&'_ str, &'_ str)) -> Option<String> {
+    match value.attribute(attribute) {
+        Some(s) => Some(s.to_owned()),
+        _ => None,
+    }
+}
+
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum UnitSidRef {
     SIUnit(UnitSId),
@@ -258,6 +265,7 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 /// ```
 #[derive(Debug, PartialEq)]
 pub struct Reaction {
+    pub id: String,
     pub list_of_reactants: ListOfSpecies,
     pub list_of_products: ListOfSpecies,
     pub reversible: bool,
@@ -270,6 +278,7 @@ pub struct Reaction {
 impl<'a> From<Node<'a, 'a>> for Reaction {
     fn from(value: Node<'a, 'a>) -> Self {
         Reaction {
+            id: value.attribute("id").unwrap().to_owned(),
             list_of_reactants: match value
                 .children()
                 .find(|n| n.tag_name().name() == "listOfReactants")
@@ -286,8 +295,20 @@ impl<'a> From<Node<'a, 'a>> for Reaction {
             },
             reversible: value.attribute("reversible").unwrap().parse().unwrap(),
             compartment: unwrap_optional_str(value, "compartment"),
-            lower_bound: unwrap_optional_str(value, "lowerFluxBound"),
-            upper_bound: unwrap_optional_str(value, "upperFluxBound"),
+            lower_bound: unwrap_optional_ns(
+                value,
+                (
+                    "http://www.sbml.org/sbml/level3/version1/fbc/version2",
+                    "lowerFluxBound",
+                ),
+            ),
+            upper_bound: unwrap_optional_ns(
+                value,
+                (
+                    "http://www.sbml.org/sbml/level3/version1/fbc/version2",
+                    "upperFluxBound",
+                ),
+            ),
             name: unwrap_optional_str(value, "name"),
             sbo_term: unwrap_optional_str(value, "sboTerm"),
         }
