@@ -8,7 +8,26 @@ use super::base_types::{
 };
 
 type HL<T> = HashMap<String, T>;
-/// Struct that holds the entire SBML document (non-coprehensive)
+/// Struct that holds the entire SBML document (non-comprehensive)
+///
+/// # Example
+///
+/// ```
+/// use rust_sbml::Model;
+/// use std::fs;
+///
+/// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
+/// let document = Model::parse(&ecoli).unwrap();
+/// assert_eq!(
+///     document
+///         .objectives
+///         .iter()
+///         .map(|reac_id| reac_id.to_owned())
+///         .next()
+///         .unwrap(),
+///     "R_BIOMASS_Ecoli_core_w_GAM"
+/// );
+/// ```
 #[cfg_attr(feature = "default", pyclass)]
 #[derive(Debug, Default, PartialEq)]
 pub struct Model {
@@ -20,6 +39,7 @@ pub struct Model {
     pub compartments: HL<Compartment>,
     pub unit_definitions: HL<HashMap<UnitSId, Unit>>,
     pub constraints: Vec<Constraint>,
+    pub objectives: Vec<String>,
 }
 
 impl Model {
@@ -156,6 +176,25 @@ impl Model {
                     .collect::<String>(),
             })
             .collect();
+        let objectives: Vec<String> = raw_model
+            .descendants()
+            .filter(|n| {
+                n.tag_name()
+                    == roxmltree::ExpandedName::from((
+                        "http://www.sbml.org/sbml/level3/version1/fbc/version2",
+                        "fluxObjective",
+                    ))
+            })
+            .map(|n| {
+                n.attribute((
+                    "http://www.sbml.org/sbml/level3/version1/fbc/version2",
+                    "reaction",
+                ))
+                .unwrap()
+                .to_owned()
+            })
+            .collect();
+
         Ok(Model {
             model_units,
             parameters,
@@ -165,6 +204,7 @@ impl Model {
             compartments,
             unit_definitions,
             constraints,
+            objectives,
         })
     }
 }
