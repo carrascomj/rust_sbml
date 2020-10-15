@@ -51,7 +51,7 @@ jobs:
       - name: Build
         run: cargo  build --verbose
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test --verbose --no-default-features
   check:
     name: Code coverage
     runs-on: ubuntu-latest
@@ -69,7 +69,7 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.12.3'
-          args: '--count --frozen -- --test-threads 1'
+          args: '--count --frozen --no-default-features -- --test-threads 1'
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v1.0.2
