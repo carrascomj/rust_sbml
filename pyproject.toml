@@ -1,3 +1,29 @@
+[project]
+name = "rust_sbml"
+version = "0.3.0"
+description = "Python Bindings to rust_sbml"
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = ["parser", "sbml", "science", "bioinformatics"]
+authors = [
+  {email = "carrascomurielj@gmail.com"},
+]
+maintainers = [
+  {name = "Jorge Carrasco Muriel", email = "carrascomurielj@gmail.com"}
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python",
+    "Programming Language :: Rust",
+]
+
 [build-system]
 requires = ["maturin"]
 build-backend = "maturin"
