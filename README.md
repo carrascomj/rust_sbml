@@ -32,8 +32,14 @@ default_features=false
 ```
 
 ### Python
-> Pypi WIP
+It has only been tested on Linux.
+#### Using pip
 
+```shell
+pip install rust_sbml
+```
+
+#### From source
 Clone the repository.
 ```shell
 git clone https://github.com/carrascomj/rust_sbml.git
