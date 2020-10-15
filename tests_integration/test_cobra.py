@@ -123,14 +123,14 @@ def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
     coefficients = {}
     try:
         objective_reaction = cobra_model.reactions.get_by_id(
-            "R_BIOMASS_Ecoli_core_w_GAM"
+            model.getObjectives()[0]
         )
     except KeyError:
         raise cobra.CobraSBMLError("Objective reaction not found")
     try:
         coefficients[objective_reaction] = 1.0
     except ValueError as e:
-        print(f"problemwithcoeff: {e}")
+        print(f"Problem with coefficient: {e}")
 
     cobra.io.sbml.set_objective(cobra_model, coefficients)
     cobra_model.solver.objective.direction = obj_direction

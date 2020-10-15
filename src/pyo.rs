@@ -114,6 +114,9 @@ impl Model {
     fn getParameter(&self, query: String) -> PyResult<Parameter> {
         Ok(self.parameters[&query].to_owned())
     }
+    fn getObjectives(&self) -> PyResult<Vec<String>> {
+        Ok(self.objectives.to_owned())
+    }
 }
 
 #[pymodule]
