@@ -95,7 +95,7 @@ jobs:
       - name: Install python CI dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install maturin pytest
+          pip install maturin pytest cobra
 
       - name: Install with maturin
         run: |
