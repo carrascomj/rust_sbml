@@ -1,4 +1,6 @@
 use mathml::MathNode;
+#[cfg(feature = "default")]
+use pyo3::prelude::*;
 use roxmltree::Attribute;
 use roxmltree::Node;
 use serde_derive::Deserialize;
@@ -18,7 +20,7 @@ fn unwrap_optional_ns(value: Node<'_, '_>, attribute: (&'_ str, &'_ str)) -> Opt
     }
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Clone)]
 pub enum UnitSidRef {
     SIUnit(UnitSId),
     CustomUnit(String),
@@ -31,7 +33,7 @@ impl<T: AsRef<str> + ToString> From<&T> for UnitSidRef {
         }
     }
 }
-#[derive(Debug, Hash, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Hash, PartialEq, Eq, Deserialize, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum UnitSId {
     Ampere,
@@ -112,7 +114,8 @@ impl From<Node<'_, '_>> for Unit {
         }
     }
 }
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "default", pyclass)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Compartment {
     units: Option<UnitSidRef>,
     pub id: String,
@@ -136,7 +139,8 @@ impl From<Node<'_, '_>> for Compartment {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "default", pyclass)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Specie {
     pub compartment: String,
     initial_concentration: Option<f64>,
@@ -175,7 +179,8 @@ impl<'a> From<Node<'a, 'a>> for Specie {
         }
     }
 }
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "default", pyclass)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct SpeciesReference {
     pub species: String,
     pub constant: bool,
@@ -200,7 +205,8 @@ impl<'a> From<Node<'a, 'a>> for SpeciesReference {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "default", pyclass)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Parameter {
     pub value: Option<f64>,
     units: Option<UnitSidRef>,
@@ -219,7 +225,7 @@ impl<'a> From<Node<'a, 'a>> for Parameter {
 pub struct InitialAssignment {
     pub symbol: String,
 }
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct ListOfSpecies(pub Vec<SpeciesReference>);
 impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
     fn from(value: Node<'a, 'a>) -> Self {
@@ -263,7 +269,8 @@ impl<'a> From<Node<'a, 'a>> for ListOfSpecies {
 ///         .any(|specref| specref.species == "X0"))
 /// );
 /// ```
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "default", pyclass)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Reaction {
     pub id: String,
     pub list_of_reactants: ListOfSpecies,
