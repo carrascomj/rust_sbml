@@ -121,21 +121,21 @@ impl Model {
     fn id(&self) -> PyResult<String> {
         Ok(match self.annotation.id.to_owned() {
             Some(s) => s,
-            None => "".to_string()
+            None => "".to_string(),
         })
     }
     #[getter]
     fn metaid(&self) -> PyResult<String> {
         Ok(match self.annotation.metaid.to_owned() {
             Some(s) => s,
-            None => "".to_string()
+            None => "".to_string(),
         })
     }
     #[getter]
     fn name(&self) -> PyResult<String> {
         Ok(match self.annotation.name.to_owned() {
             Some(s) => s,
-            None => "".to_string()
+            None => "".to_string(),
         })
     }
 }

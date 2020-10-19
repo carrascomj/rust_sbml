@@ -3,8 +3,8 @@ use pyo3::prelude::*;
 use std::collections::HashMap;
 
 use super::base_types::{
-    Annotation, Compartment, Constraint, InitialAssignment, ModelUnits, Parameter, Reaction, Specie, Unit,
-    UnitSId,
+    Annotation, Compartment, Constraint, InitialAssignment, ModelUnits, Parameter, Reaction,
+    Specie, Unit, UnitSId,
 };
 
 type HL<T> = HashMap<String, T>;
@@ -124,7 +124,9 @@ impl Model {
         let annotation: Annotation = raw_model
             .descendants()
             .filter(|n| n.tag_name().name() == "model")
-            .map(|n| Annotation::from(n)).next().unwrap();
+            .map(Annotation::from)
+            .next()
+            .unwrap();
         // Compartments
         let compartments: HashMap<String, Compartment> = raw_model
             .descendants()
