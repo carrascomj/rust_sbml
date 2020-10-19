@@ -4,7 +4,7 @@ mod model;
 mod pyo;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter, Reaction,
+    Annotation, Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter, Reaction,
     Specie, SpeciesReference, Unit, UnitSId, UnitSidRef,
 };
 

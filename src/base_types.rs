@@ -114,6 +114,43 @@ impl From<Node<'_, '_>> for Unit {
         }
     }
 }
+/// Metadata for models
+///
+/// # Example
+///
+/// ```
+/// use roxmltree;
+/// use rust_sbml::Annotation;
+///
+///let anotation: Annotation = roxmltree::Document::parse(
+///     "<model extentUnits='substance' id='e_coli_core' metaid='e_coli_core' name='Escherichia coli str. K-12 substr. MG1655' substanceUnits='substance' timeUnits='time'>",
+/// )
+/// .unwrap()
+/// .descendants()
+/// .filter(|n| n.tag_name().name() == "model")
+/// .map(|n| Annotation::from(n)).next().unwrap();
+/// println!("{:?}", anotation);
+/// assert_eq!(
+///     anotation.name.unwrap(),
+///     "Escherichia coli str. K-12 substr. MG1655".to_string()
+/// );
+/// ```
+#[derive(Debug, Default, PartialEq, Clone)]
+pub struct Annotation {
+    pub id: Option<String>,
+    pub metaid: Option<String>,
+    pub name: Option<String>,
+}
+impl From<Node<'_, '_>> for Annotation {
+    fn from(value: Node<'_, '_>) -> Self {
+        Annotation {
+            id: unwrap_optional_str(value, "id"),
+            metaid: unwrap_optional_str(value, "metaid"),
+            name: unwrap_optional_str(value, "name"),
+        }
+    }
+}
+
 #[cfg_attr(feature = "default", pyclass)]
 #[derive(Debug, PartialEq, Clone)]
 pub struct Compartment {
