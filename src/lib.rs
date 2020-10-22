@@ -1,7 +1,7 @@
 mod base_types;
 mod model;
-#[cfg(not(tarpaulin_include))]
 #[cfg(feature = "default")]
+#[cfg(not(tarpaulin_include))]
 mod pyo;
 
 pub use base_types::{
