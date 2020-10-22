@@ -1,28 +1,28 @@
 import cobra
-import pytest
 from collections import defaultdict
 import rust_sbml
 
 
-def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
+def sbml_to_model(path, **kwargs):
     """Creates cobra model from SBMLDocument.
+
     Parameters
     ----------
-    doc: libsbml.SBMLDocument
-    number: data type of stoichiometry: {float, int}
-        In which data type should the stoichiometry be parsed.
-    f_replace : dict of replacement functions for id replacement
-    set_missing_bounds : flag to set missing bounds
+    path: str
+        model in XML:SBML
+
     Returns
     -------
     cobra.core.Model
+
     """
     # SBML model
     model = rust_sbml.Model(path)
     if model is None:
         raise cobra.CobraSBMLError("No SBML model detected in file.")
     cobra_model = cobra.Model("my_model")
-    cobra_model.name = "kai model"
+    cobra_model.id = model.id
+    cobra_model.name = model.name
 
     # FIXME: update with new compartments
     compartments = {}
@@ -63,8 +63,7 @@ def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
                 cobra_reaction.lower_bound = p_lb.getValue()
             else:
                 raise cobra.CobraSBMLError(
-                    "No constant bound '%s' for "
-                    "reaction: %s" % (p_lb, reaction)
+                    "No constant bound '%s' for " "reaction: %s" % (p_lb, reaction)
                 )
 
         ub_id = reaction.getUpperFluxBound()
@@ -74,8 +73,7 @@ def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
                 cobra_reaction.upper_bound = p_ub.getValue()
             else:
                 raise cobra.CobraSBMLError(
-                    "No constant bound '%s' for "
-                    "reaction: %s" % (p_ub, reaction)
+                    "No constant bound '%s' for " "reaction: %s" % (p_ub, reaction)
                 )
 
         if p_lb is None:
@@ -122,9 +120,7 @@ def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
     obj_direction = "max"
     coefficients = {}
     try:
-        objective_reaction = cobra_model.reactions.get_by_id(
-            model.getObjectives()[0]
-        )
+        objective_reaction = cobra_model.reactions.get_by_id(model.getObjectives()[0])
     except KeyError:
         raise cobra.CobraSBMLError("Objective reaction not found")
     try:
@@ -141,6 +137,11 @@ def sbml_to_model(path, number=float, set_missing_bounds=False, **kwargs):
 def test_integration():
     model = sbml_to_model("examples/EcoliCore.xml")
     model.optimize()
+
+def test_annotation():
+    model = sbml_to_model("examples/EcoliCore.xml")
+    assert model.id == "e_coli_core"
+    assert model.name == "Escherichia coli str. K-12 substr. MG1655"
 
 
 def test_consistency():

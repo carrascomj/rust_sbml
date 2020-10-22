@@ -4,8 +4,8 @@ mod model;
 mod pyo;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter, Reaction,
-    Specie, SpeciesReference, Unit, UnitSId, UnitSidRef,
+    Annotation, Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter,
+    Reaction, Specie, SpeciesReference, Unit, UnitSId, UnitSidRef,
 };
 
 pub use model::{parse_document, Model};

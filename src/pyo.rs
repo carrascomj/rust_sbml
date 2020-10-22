@@ -117,6 +117,27 @@ impl Model {
     fn getObjectives(&self) -> PyResult<Vec<String>> {
         Ok(self.objectives.to_owned())
     }
+    #[getter]
+    fn id(&self) -> PyResult<String> {
+        Ok(match self.annotation.id.to_owned() {
+            Some(s) => s,
+            None => "".to_string(),
+        })
+    }
+    #[getter]
+    fn metaid(&self) -> PyResult<String> {
+        Ok(match self.annotation.metaid.to_owned() {
+            Some(s) => s,
+            None => "".to_string(),
+        })
+    }
+    #[getter]
+    fn name(&self) -> PyResult<String> {
+        Ok(match self.annotation.name.to_owned() {
+            Some(s) => s,
+            None => "".to_string(),
+        })
+    }
 }
 
 #[pymodule]
