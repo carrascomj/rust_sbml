@@ -8,7 +8,7 @@ on:
     paths:
       - "README.tpl"
       - "lib.rs"
-      - "readme.yml"
+      - ".github/worflows/readme.yml"
 
 jobs:
   readme:
