@@ -8,6 +8,7 @@ on:
     paths:
       - "README.tpl"
       - "lib.rs"
+      - "readme.yml"
 
 jobs:
   readme:
