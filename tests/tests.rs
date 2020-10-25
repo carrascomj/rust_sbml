@@ -1,4 +1,3 @@
-use mathml;
 use mathml::BuiltinOp::*;
 use mathml::MathNode::*;
 use mathml::NumType::*;

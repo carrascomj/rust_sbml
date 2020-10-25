@@ -16,7 +16,6 @@ pub use pyo::*;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use roxmltree;
 
     #[test]
     fn test_name() {
@@ -35,7 +34,7 @@ mod tests {
         .unwrap()
         .descendants()
         .filter(|n| n.tag_name().name() == "reaction")
-        .map(|n| Reaction::from(n))
+        .map(Reaction::from)
         .collect();
         println!("{:?}", reactions);
         assert_eq!(reactions[1].list_of_reactants.0.len(), 2);
