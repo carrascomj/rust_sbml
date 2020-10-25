@@ -13,6 +13,8 @@ readme = "README.md"
 [lib]
 name = "rust_sbml"
 crate-type = ["cdylib", "rlib"]
+# for cargo readme (https://github.com/livioribeiro/cargo-readme/issues/32hj) 
+path = "src/lib.rs"
 
 [dependencies]
 roxmltree = "0.10.1"
