@@ -12,7 +12,7 @@ on:
       - "LICENSE-*"
       - "**.md"
       - "**.txt"
-      - ".github/workflows/readme.yml"
+      - "**readme.yml"
   pull_request:
     branches:
       - trunk
@@ -22,7 +22,7 @@ on:
       - "LICENSE-*"
       - "**.md"
       - "**.txt"
-      - ".github/workflows/readme.yml"
+      - "**readme.yml"
 
 jobs:
   rustfmt:
