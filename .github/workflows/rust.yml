@@ -13,6 +13,7 @@ on:
       - "**.md"
       - "**.txt"
       - "**readme.yml"
+      - "**tpl"
   pull_request:
     branches:
       - trunk
@@ -23,6 +24,7 @@ on:
       - "**.md"
       - "**.txt"
       - "**readme.yml"
+      - "**tpl"
 
 jobs:
   rustfmt:
