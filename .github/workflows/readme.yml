@@ -15,9 +15,20 @@ jobs:
     name: Generate README
     runs-on: ubuntu-latest
     steps: 
-      - name: A job to autogenerate README.md
-        uses: carrascomj/cargo-readme-action@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
         with:
-          user: carrascomj
-          email: carracomurielj@gmail.com
-          branch: trunk
+          toolchain: stable
+          override: true 
+      - name: Install cargo-readme
+        run: cargo install cargo-readme
+      - name: Run and commit
+        run: |
+          cargo readme > README.md  
+          git config user.name carrascomj
+          git config user.email carrascomurielj@gmail.com
+          git add README.md
+          git commit -m 'docs: generate readme from template :robot:'
+          git push origin trunk
