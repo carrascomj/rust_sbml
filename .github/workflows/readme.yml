@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: A job to autogenerate README.md
-        uses: carrascomj/cargo-readme-action@v1
+        uses: carrascomj/cargo-readme-action@v2
         with:
           user: carrascomj
           email: carracomurielj@gmail.com
