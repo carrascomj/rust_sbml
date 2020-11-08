@@ -24,11 +24,10 @@ jobs:
           override: true 
       - name: Install cargo-readme
         run: cargo install cargo-readme
-      - name: Run and commit
-        run: |
-          cargo readme > README.md  
-          git config user.name carrascomj
-          git config user.email carrascomurielj@gmail.com
-          git add README.md
-          git commit -m 'docs: generate readme from template :robot:'
-          git push origin trunk
+      - name: Run cargo-readme
+        run: cargo readme > README.md
+      - name: Commit generated README
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'docs: generate readme from template :robot:'
+          file_pattern: README.md
