@@ -27,7 +27,7 @@ jobs:
       - name: Run cargo-readme
         run: cargo readme > README.md
       - name: Commit generated README
-      - uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: 'docs: generate readme from template :robot:'
           file_pattern: README.md
