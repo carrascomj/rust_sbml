@@ -102,4 +102,4 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
 additional terms or conditions.
 
-<p><small>README.md is automatically generated on CI using <a target="_blank" href="https://github.com/livioribeiro/cargo-readme">cargo-readme</a>. Please, modify README.tpl or lib.rs instead.</small></p>
+> README.md is automatically generated on CI using [cargo-readme](https://github.com/livioribeiro/cargo-readme). Please, modify README.tpl or lib.rs instead (check [the github worflow](https://github.com/carrascomj/rust_sbml/blob/trunk/.github/workflows/readme.yml) for more details).
