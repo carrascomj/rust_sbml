@@ -1,5 +1,6 @@
-import cobra
 from collections import defaultdict
+
+import cobra
 import rust_sbml
 
 
@@ -63,7 +64,7 @@ def sbml_to_model(path, **kwargs):
                 cobra_reaction.lower_bound = p_lb.getValue()
             else:
                 raise cobra.CobraSBMLError(
-                    "No constant bound '%s' for " "reaction: %s" % (p_lb, reaction)
+                    f"No constant bound {p_lb} for " "reaction: {reaction}}"
                 )
 
         ub_id = reaction.getUpperFluxBound()
@@ -73,7 +74,7 @@ def sbml_to_model(path, **kwargs):
                 cobra_reaction.upper_bound = p_ub.getValue()
             else:
                 raise cobra.CobraSBMLError(
-                    "No constant bound '%s' for " "reaction: %s" % (p_ub, reaction)
+                    f"No constant bound {p_ub} for " "reaction: {reaction}}"
                 )
 
         if p_lb is None:
@@ -120,7 +121,9 @@ def sbml_to_model(path, **kwargs):
     obj_direction = "max"
     coefficients = {}
     try:
-        objective_reaction = cobra_model.reactions.get_by_id(model.getObjectives()[0])
+        objective_reaction = cobra_model.reactions.get_by_id(
+                model.getObjectives()[0]
+        )
     except KeyError:
         raise cobra.CobraSBMLError("Objective reaction not found")
     try:
@@ -137,6 +140,7 @@ def sbml_to_model(path, **kwargs):
 def test_integration():
     model = sbml_to_model("examples/EcoliCore.xml")
     model.optimize()
+
 
 def test_annotation():
     model = sbml_to_model("examples/EcoliCore.xml")
