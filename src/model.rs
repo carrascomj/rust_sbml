@@ -248,7 +248,6 @@ impl Model {
 
         // Constraints
         let constraints: Vec<Constraint> = raw_model.list_of_constraints.constraints;
-        println!("{:?}", &raw_model.list_of_objectives);
         let objectives: Option<Vec<String>> = match raw_model.list_of_objectives {
             Some(objs) => Some(
                 objs.objectives
