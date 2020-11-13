@@ -11,6 +11,7 @@ use super::list_of::*;
 /// SBML model as defined in the [SBML Level 3 Version 2 core](http://sbml.org/Documents/Specifications).
 ///
 /// Extended with [fbc plugin](http://sbml.org/Documents/Specifications/SBML_Level_3/Packages/fbc)
+///
 /// # Example
 ///
 /// ```
@@ -67,6 +68,8 @@ struct SBML {
     model: ModelRaw,
 }
 
+/// Bucket struct to hold all units defined on the top level of 
+/// [`ModelRaw`](./rust_sbml/struct.ModelRaw.html).
 #[derive(Debug, Default, PartialEq)]
 pub struct ModelUnits {
     pub substance_units: Option<UnitSIdRef>,
