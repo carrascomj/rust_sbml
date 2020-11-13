@@ -23,7 +23,7 @@ pub struct ListOfUnits {
 }
 
 /// A Unit object represents a reference to a (possibly transformed) base unit
-/// (see [UnitSIdRef](./enum.UnitSIdRef.html).
+/// (see [UnitSIdRef](./enum.UnitSIdRef.html)).
 ///
 /// The attribute kind indicates the base unit, whereas the attributes
 /// exponent, scale and multiplier define how the base unit is being transformed.
@@ -122,6 +122,7 @@ pub struct Compartment {
 }
 
 /// A species in SBML refers to a pool of entities that
+///
 /// ⁻ are considered indistinguishable from each other for the purposes of the model;
 /// - may participate in reactions;
 /// - are located in a specific compartment.
@@ -186,8 +187,10 @@ pub struct Parameter {
     pub constant: bool,
 }
 
-/// InitialAssigments provide a way to compute initial values that must be
-/// (using a MathML expression).
+/// InitialAssigments provide a way to declare initial values that must be
+/// computed (using a MathML expression).
+///
+/// TODO: integrate MathML
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct InitialAssignment {
     pub id: Option<String>,
@@ -288,7 +291,7 @@ pub struct Reaction {
     pub upper_bound: Option<String>,
 }
 
-/// TODO: MathML not integrated
+// TODO: MathML not integrated
 // #[derive(Debug, PartialEq)]
 // pub struct Function {
 //     math: MathNode,

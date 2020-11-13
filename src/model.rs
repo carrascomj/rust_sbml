@@ -75,7 +75,7 @@ struct SBML {
 }
 
 /// Bucket struct to hold all units defined on the top level of
-/// [`ModelRaw`](./rust_sbml/struct.ModelRaw.html).
+/// [`ModelRaw`](./struct.ModelRaw.html).
 #[derive(Debug, Default, PartialEq)]
 pub struct ModelUnits {
     pub substance_units: Option<UnitSIdRef>,
