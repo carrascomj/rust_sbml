@@ -96,9 +96,9 @@ impl From<&ModelRaw> for ModelUnits {
 }
 
 type HL<T> = HashMap<String, T>;
-/// Commodity abstraction over the SBML specification. It traverse each top-level
-/// listOF_ and provides `HashMaps<id, object>´ instead. In addition the model
-/// units are gathered in an [`ModelUnits`](./rust_sbml/struct.ModelUnits.html) struct.
+/// Abstraction over the SBML specification. It traverses each top-level
+/// listOF_ and provides `HashMaps<id, object>` instead. In addition the model
+/// units are gathered in an [`ModelUnits`](./struct.ModelUnits.html) struct.
 ///
 /// # Example
 ///
@@ -274,6 +274,7 @@ impl Model {
     }
 }
 
+/// Shortcut to [`Model::parse`](./struct.Model.html).
 pub fn parse_document(doc: &str) -> Result<Model, Box<dyn std::error::Error>> {
     Model::parse(doc)
 }

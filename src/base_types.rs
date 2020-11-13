@@ -3,7 +3,7 @@
 use pyo3::prelude::*;
 use serde::Deserialize;
 
-/// Combination of [`Unit`](./rust_sbml/struct.Unit.html).
+/// Combination of [`Unit`](../struct.Unit.html).
 ///
 /// The approach to defining units in SBML is compositional; for example,
 /// metre second −2 is constructed by combining
@@ -23,7 +23,7 @@ pub struct ListOfUnits {
 }
 
 /// A Unit object represents a reference to a (possibly transformed) base unit
-/// (see [UnitSIdRef](./rust_sbml/enum.UnitSIdRef.html).
+/// (see [UnitSIdRef](./enum.UnitSIdRef.html).
 ///
 /// The attribute kind indicates the base unit, whereas the attributes
 /// exponent, scale and multiplier define how the base unit is being transformed.
@@ -35,7 +35,7 @@ pub struct Unit {
     pub multiplier: f64,
 }
 
-/// SBML provides predefined base units, gathered in [`UnitSId`](./rust_sbml/enum.UnitSId.html).
+/// SBML provides predefined base units, gathered in [`UnitSId`](./enum.UnitSId.html).
 /// Alternatively, one can use arbitrary `CustomUnit`s.
 #[derive(Debug, Deserialize, Hash, PartialEq, Eq, Clone)]
 #[serde(untagged)]
@@ -304,6 +304,9 @@ pub struct Constraint {
 
 /// The Flux Balance Constraints package of SBML defines extensions for the 
 /// model, including the FBC Objective. 
+///
+/// See the [FBC specification](http://co.mbine.org/specifications/sbml.level-3.version-1.fbc.version-2.release-1.pdf)
+/// for more details.
 ///
 /// # Example
 /// 
