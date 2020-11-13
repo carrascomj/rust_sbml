@@ -68,7 +68,7 @@ struct SBML {
     model: ModelRaw,
 }
 
-/// Bucket struct to hold all units defined on the top level of 
+/// Bucket struct to hold all units defined on the top level of
 /// [`ModelRaw`](./rust_sbml/struct.ModelRaw.html).
 #[derive(Debug, Default, PartialEq)]
 pub struct ModelUnits {

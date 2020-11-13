@@ -86,8 +86,8 @@ mod model;
 mod pyo;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species, SpeciesReference,
-    Unit, UnitSId, UnitSIdRef, Objective
+    Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
+    SpeciesReference, Unit, UnitSId, UnitSIdRef,
 };
 
 pub use model::{parse_document, Model, ModelRaw, ModelUnits};

@@ -292,7 +292,7 @@ pub struct Reaction {
 
 /// The Constraint object is a mechanism for stating the assumptions under which
 /// a model is designed to operate.
-/// 
+///
 /// TODO: MathML not integrated
 #[derive(Debug, Deserialize, PartialEq, Default, Clone)]
 pub struct Constraint {
@@ -302,14 +302,14 @@ pub struct Constraint {
     pub sbo_term: Option<String>,
 }
 
-/// The Flux Balance Constraints package of SBML defines extensions for the 
-/// model, including the FBC Objective. 
+/// The Flux Balance Constraints package of SBML defines extensions for the
+/// model, including the FBC Objective.
 ///
 /// See the [FBC specification](http://co.mbine.org/specifications/sbml.level-3.version-1.fbc.version-2.release-1.pdf)
 /// for more details.
 ///
 /// # Example
-/// 
+///
 /// ```
 /// use quick_xml::de::from_str;
 /// use rust_sbml::Objective;
