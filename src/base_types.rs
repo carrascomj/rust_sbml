@@ -132,9 +132,12 @@ pub struct Compartment {
 ///     hasOnlySubstanceUnits='false' boundaryCondition='false' constant='false'/>"
 /// )
 /// .unwrap();
+/// assert_eq!(species[0].id, "Glucose");
 /// assert_eq!(species[0].compartment, "cell");
 /// assert_eq!(species[0].initial_concentration.unwrap() as u8, 4);
 /// assert!(!species[0].constant);
+/// assert!(!species[0].boundary_condition);
+/// assert!(!species[0].has_only_substance_units);
 /// ```
 #[cfg_attr(feature = "default", pyclass)]
 #[derive(Debug, Deserialize, PartialEq, Clone)]
@@ -212,6 +215,8 @@ pub struct InitialAssignment {
 ///     .iter();
 /// assert!(specs_ref
 ///     .any(|specref| specref.species == "X0"));
+/// assert!(specs_ref
+///     .any(|specref| {println!("{:?}", specref); specref.stoichiometry.unwrap() as i32 == 1}));
 /// assert!(specs_ref
 ///     .all(|specref| specref.constant));
 /// ```
