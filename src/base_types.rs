@@ -30,7 +30,7 @@ pub struct ListOfUnits {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct Unit {
     /// FIXME: quick_xml fails to serialiaze untagged enums
-    #[serde(default="unk")]
+    #[serde(default = "unk")]
     pub kind: UnitSIdRef,
     pub exponent: f64,
     pub scale: i64,

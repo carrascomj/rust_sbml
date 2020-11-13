@@ -64,7 +64,7 @@ impl ModelRaw {
 
     pub fn to_string(&self) -> Result<String, quick_xml::DeError> {
         quick_xml::se::to_string(&SBML {
-            model: (*self).clone()
+            model: (*self).clone(),
         })
     }
 }
