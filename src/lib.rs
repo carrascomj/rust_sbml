@@ -28,6 +28,9 @@
 //! println!("{:?}", result.unwrap());
 //! ```
 //!
+//! See [write_to_file.rs](https://github.com/carrascomj/rust_sbml/blob/trunk/examples/write_to_file.rs)
+//! for an example on serializing to a file.
+//!
 //! ## Python
 //! It has only been tested on Linux.
 //! ### Using pip
