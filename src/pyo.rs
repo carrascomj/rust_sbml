@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
-use super::{Compartment, Model, Parameter, Reaction, Specie, SpeciesReference};
+use super::{Compartment, Model, Parameter, Reaction, Species, SpeciesReference};
 use pyo3::prelude::*;
 
 #[pymethods]
-impl Specie {
+impl Species {
     #[getter]
     fn id(&self) -> PyResult<String> {
         Ok(self.id.to_owned())
@@ -42,10 +42,10 @@ impl Reaction {
         })
     }
     fn getListOfReactants(&self) -> PyResult<Vec<SpeciesReference>> {
-        Ok(self.list_of_reactants.to_owned().0)
+        Ok(self.list_of_reactants.to_owned().species_references)
     }
     fn getListOfProducts(&self) -> PyResult<Vec<SpeciesReference>> {
-        Ok(self.list_of_products.to_owned().0)
+        Ok(self.list_of_products.to_owned().species_references)
     }
     fn getLowerFluxBound(&self) -> PyResult<String> {
         Ok(match self.lower_bound.to_owned() {
@@ -105,7 +105,7 @@ impl Model {
             .map(|(_, n)| n.to_owned())
             .collect())
     }
-    fn getListOfSpecies(&self) -> PyResult<Vec<Specie>> {
+    fn getListOfSpecies(&self) -> PyResult<Vec<Species>> {
         Ok(self.species.iter().map(|(_, n)| n.to_owned()).collect())
     }
     fn getListOfReactions(&self) -> PyResult<Vec<Reaction>> {
@@ -115,25 +115,28 @@ impl Model {
         Ok(self.parameters[&query].to_owned())
     }
     fn getObjectives(&self) -> PyResult<Vec<String>> {
-        Ok(self.objectives.to_owned())
+        Ok(match self.objectives.to_owned() {
+            Some(o) => o,
+            _ => Vec::new()
+        })
     }
     #[getter]
     fn id(&self) -> PyResult<String> {
-        Ok(match self.annotation.id.to_owned() {
+        Ok(match self.id.to_owned() {
             Some(s) => s,
             None => "".to_string(),
         })
     }
     #[getter]
     fn metaid(&self) -> PyResult<String> {
-        Ok(match self.annotation.metaid.to_owned() {
+        Ok(match self.metaid.to_owned() {
             Some(s) => s,
             None => "".to_string(),
         })
     }
     #[getter]
     fn name(&self) -> PyResult<String> {
-        Ok(match self.annotation.name.to_owned() {
+        Ok(match self.name.to_owned() {
             Some(s) => s,
             None => "".to_string(),
         })
@@ -144,7 +147,7 @@ impl Model {
 fn rust_sbml(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Model>()?;
     m.add_class::<Reaction>()?;
-    m.add_class::<Specie>()?;
+    m.add_class::<Species>()?;
     m.add_class::<SpeciesReference>()?;
     m.add_class::<Compartment>()?;
     Ok(())
