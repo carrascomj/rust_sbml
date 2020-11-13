@@ -79,17 +79,18 @@
 //! * [x] Test suite with python calls.
 //! * [x] Test suite with libsbml comparison trough cobrapy.
 mod base_types;
+mod list_of;
 mod model;
 #[cfg(feature = "default")]
 #[cfg(not(tarpaulin_include))]
 mod pyo;
 
 pub use base_types::{
-    Annotation, Compartment, Constraint, InitialAssignment, ListOfSpecies, ModelUnits, Parameter,
-    Reaction, Specie, SpeciesReference, Unit, UnitSId, UnitSidRef,
+    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species, SpeciesReference,
+    Unit, UnitSId, UnitSIdRef,
 };
 
-pub use model::{parse_document, Model};
+pub use model::{parse_document, Model, ModelUnits};
 #[cfg(feature = "default")]
 pub use pyo::*;
 
@@ -99,24 +100,22 @@ mod tests {
 
     #[test]
     fn test_name() {
-        let reactions: Vec<Reaction> = roxmltree::Document::parse(
-            "<model id='example'><listOfReactions>
-                 <reaction id='J1' reversible='false'>
-                     <listOfReactants>
-                         <speciesReference species='X0' stoichiometry='2' constant='true'/>
-                         <reaction id='J2' reversible='false'>
-                             <listOfReactants>
-                             <speciesReference species='CAP' stoichiometry='2' constant='true'/>
-                             <speciesReference species='ZOOM' stoichiometry='-2' constant='true'/>
-                     </listOfReactants></reaction>
-             </listOfReactants></reaction></listOfReactions></model>",
-        )
-        .unwrap()
-        .descendants()
-        .filter(|n| n.tag_name().name() == "reaction")
-        .map(Reaction::from)
-        .collect();
+        let reactions: Result<Vec<Reaction>, quick_xml::DeError> = quick_xml::de::from_str(
+            "<reaction id='J1' reversible='false'>
+             <listOfReactants>
+                     <speciesReference species='X0' stoichiometry='2' constant='true'/>
+                 </listOfReactants>
+              </reaction>
+             <reaction id='J2' reversible='false'>
+                 <listOfReactants>
+                 <speciesReference species='CAP' stoichiometry='2' constant='true'/>
+                 <speciesReference species='ZOOM' stoichiometry='-2' constant='true'/>
+                 </listOfReactants>
+             </reaction>",
+        );
+        assert!(reactions.is_ok());
+        let reactions = reactions.unwrap();
         println!("{:?}", reactions);
-        assert_eq!(reactions[1].list_of_reactants.0.len(), 2);
+        assert_eq!(reactions[1].list_of_reactants.species_references.len(), 2);
     }
 }
