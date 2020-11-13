@@ -12,6 +12,7 @@ coverage:
 # Tests aren't important for coverage
 ignore:
   - "tests"
+  - "src/pyo.rs"
 
 # Make less noisy comments
 comment:
