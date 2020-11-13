@@ -117,7 +117,7 @@ impl Model {
     fn getObjectives(&self) -> PyResult<Vec<String>> {
         Ok(match self.objectives.to_owned() {
             Some(o) => o,
-            _ => Vec::new()
+            _ => Vec::new(),
         })
     }
     #[getter]

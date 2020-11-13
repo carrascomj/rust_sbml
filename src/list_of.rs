@@ -1,7 +1,8 @@
 use serde::Deserialize;
 
 use super::base_types::{
-    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species, UnitDefinition, Objective
+    Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
+    UnitDefinition,
 };
 
 #[derive(Deserialize, PartialEq, Debug, Default)]
@@ -50,4 +51,3 @@ pub struct ListOfObjectives {
     #[serde(rename = "objective", default)]
     pub objectives: Vec<Objective>,
 }
-

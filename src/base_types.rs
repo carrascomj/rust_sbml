@@ -210,7 +210,7 @@ pub struct Objective {
 
 #[derive(Debug, Deserialize, PartialEq, Default, Clone)]
 pub struct ListOfFluxObjectives {
-    #[serde(rename="fluxObjective", default)]
+    #[serde(rename = "fluxObjective", default)]
     pub flux_objectives: Vec<FluxObjective>,
 }
 
