@@ -90,7 +90,7 @@ pub use base_types::{
     Unit, UnitSId, UnitSIdRef,
 };
 
-pub use model::{parse_document, Model, ModelUnits};
+pub use model::{parse_document, Model, ModelRaw, ModelUnits};
 #[cfg(feature = "default")]
 pub use pyo::*;
 

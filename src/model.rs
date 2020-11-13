@@ -8,6 +8,22 @@ use super::base_types::{
 };
 use super::list_of::*;
 
+/// SBML model as defined in the [SBML Level 3 Version 2 core](http://sbml.org/Documents/Specifications).
+///
+/// Extended with [fbc plugin](http://sbml.org/Documents/Specifications/SBML_Level_3/Packages/fbc)
+/// # Example
+///
+/// ```
+/// use rust_sbml::ModelRaw;
+/// use std::fs;
+///
+/// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
+/// let raw_model = ModelRaw::parse(&ecoli).unwrap();
+/// assert_eq!(
+///     raw_model.list_of_unit_definitions.unit_definitions[0].id.to_owned().unwrap(),
+///     "mmol_per_gDW_per_hr"
+/// )
+/// ```
 #[derive(Deserialize, Debug, Default, PartialEq)]
 #[serde(rename = "model", rename_all = "camelCase")]
 pub struct ModelRaw {
@@ -37,6 +53,13 @@ pub struct ModelRaw {
     pub list_of_constraints: ListOfConstraints,
     #[serde(rename = "listOfObjectives", default)]
     pub list_of_objectives: Option<ListOfObjectives>,
+}
+
+impl ModelRaw {
+    pub fn parse(doc: &str) -> Result<Self, quick_xml::DeError> {
+        let raw_model: SBML = quick_xml::de::from_str(doc)?;
+        Ok(raw_model.model)
+    }
 }
 
 #[derive(Deserialize, Debug, Default, PartialEq)]
@@ -70,7 +93,9 @@ impl From<&ModelRaw> for ModelUnits {
 }
 
 type HL<T> = HashMap<String, T>;
-/// Struct that holds the entire SBML document (non-comprehensive)
+/// Commodity abstraction over the SBML specification. It traverse each top-level
+/// listOF_ and provides `HashMaps<id, object>´ instead. In addition the model
+/// units are gathered in an [`ModelUnits`](./rust_sbml/struct.ModelUnits.html) struct.
 ///
 /// # Example
 ///
