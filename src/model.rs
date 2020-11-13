@@ -180,8 +180,7 @@ impl Model {
     /// println!("{:?}", document.get_list_of_reactions())
     /// ```
     pub fn parse(doc: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let raw_model: SBML = quick_xml::de::from_str(doc)?;
-        let raw_model = raw_model.model;
+        let raw_model = ModelRaw::parse(doc)?;
         // Units used by the model itself
         let model_units: ModelUnits = ModelUnits::from(&raw_model);
 
