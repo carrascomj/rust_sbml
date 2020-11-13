@@ -1,7 +1,7 @@
 // use mathml::MathNode;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Combination of [`Unit`](../struct.Unit.html).
 ///
@@ -9,14 +9,14 @@ use serde::Deserialize;
 /// metre second −2 is constructed by combining
 /// an Unit object representing metre with another Unit object representing
 /// second −2.
-#[derive(Deserialize, PartialEq, Debug, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone)]
 pub struct UnitDefinition {
     pub id: Option<String>,
     #[serde(rename = "listOfUnits", default)]
     pub list_of_units: ListOfUnits,
 }
 
-#[derive(Deserialize, PartialEq, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
 pub struct ListOfUnits {
     #[serde(rename = "unit")]
     pub units: Vec<Unit>,
@@ -27,17 +27,23 @@ pub struct ListOfUnits {
 ///
 /// The attribute kind indicates the base unit, whereas the attributes
 /// exponent, scale and multiplier define how the base unit is being transformed.
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct Unit {
+    /// FIXME: quick_xml fails to serialiaze untagged enums
+    #[serde(default = "unk")]
     pub kind: UnitSIdRef,
     pub exponent: f64,
     pub scale: i64,
     pub multiplier: f64,
 }
 
+fn unk() -> UnitSIdRef {
+    UnitSIdRef::CustomUnit("Unknown".to_string())
+}
+
 /// SBML provides predefined base units, gathered in [`UnitSId`](./enum.UnitSId.html).
 /// Alternatively, one can use arbitrary `CustomUnit`s.
-#[derive(Debug, Deserialize, Hash, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Hash, PartialEq, Eq, Clone)]
 #[serde(untagged)]
 pub enum UnitSIdRef {
     SIUnit(UnitSId),
@@ -45,7 +51,7 @@ pub enum UnitSIdRef {
 }
 
 /// One of the predefined values of a base unit by SBML level 3.
-#[derive(Debug, Hash, PartialEq, Eq, Deserialize, Clone)]
+#[derive(Debug, Hash, PartialEq, Eq, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum UnitSId {
     Ampere,
@@ -97,15 +103,14 @@ pub enum UnitSId {
 ///     <compartment id='Cytosol' spatialDimensions='3' size='1e-15' constant='true'/>"
 /// )
 /// .unwrap();
-/// assert!(compartments.iter()
-///     .any(|c| c.spatial_dimensions.unwrap() as i32 == 2));
+/// assert!(compartments.iter() .any(|c| c.spatial_dimensions.unwrap() as i32 == 2));
 /// assert!(compartments.iter()
 ///     .any(|c| c.id == "Cytosol"));
 /// assert!(compartments.iter()
 ///     .all(|c| c.constant));
 /// ```
 #[cfg_attr(feature = "default", pyclass)]
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Compartment {
     pub units: Option<UnitSIdRef>,
@@ -140,7 +145,7 @@ pub struct Compartment {
 /// assert!(!species[0].has_only_substance_units);
 /// ```
 #[cfg_attr(feature = "default", pyclass)]
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Species {
     pub id: String,
@@ -173,7 +178,7 @@ pub struct Species {
 /// );
 /// assert_eq!(parameter[1].id, "Km1");
 #[cfg_attr(feature = "default", pyclass)]
-#[derive(Debug, Deserialize, PartialEq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
 pub struct Parameter {
     pub id: String,
     pub value: Option<f64>,
@@ -183,7 +188,7 @@ pub struct Parameter {
 
 /// InitialAssigments provide a way to compute initial values that must be
 /// (using a MathML expression).
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct InitialAssignment {
     pub id: Option<String>,
     pub symbol: String,
@@ -221,7 +226,7 @@ pub struct InitialAssignment {
 ///     .all(|specref| specref.constant));
 /// ```
 #[cfg_attr(feature = "default", pyclass)]
-#[derive(Deserialize, Debug, PartialEq, Clone)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Clone)]
 pub struct SpeciesReference {
     pub species: String,
     pub constant: bool,
@@ -232,7 +237,7 @@ pub struct SpeciesReference {
     pub stoichiometry: Option<f64>,
 }
 
-#[derive(Debug, PartialEq, Clone, Default, Deserialize)]
+#[derive(Debug, PartialEq, Clone, Default, Deserialize, Serialize)]
 pub struct ListOfSpeciesReferences {
     #[serde(rename = "speciesReference", default = "Vec::new")]
     pub species_references: Vec<SpeciesReference>,
@@ -265,7 +270,7 @@ pub struct ListOfSpeciesReferences {
 ///     .any(|specref| specref.species == "X0"));
 /// ```
 #[cfg_attr(feature = "default", pyclass)]
-#[derive(Debug, Deserialize, PartialEq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Reaction {
     pub id: String,
@@ -299,7 +304,7 @@ pub struct Reaction {
 /// a model is designed to operate.
 ///
 /// TODO: MathML not integrated
-#[derive(Debug, Deserialize, PartialEq, Default, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
 pub struct Constraint {
     // pub math: Option<MathNode>,
     pub message: String,
@@ -335,7 +340,7 @@ pub struct Constraint {
 /// objectives.iter().any(|o| o.sense == "maximize");
 /// objectives[1].list_of_flux_objectives.flux_objectives.iter().any(|r| r.reaction.to_owned().unwrap() == "R103");
 /// ```
-#[derive(Debug, Deserialize, PartialEq, Default, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
 pub struct Objective {
     #[serde(rename = "fbc:id")]
     pub id: String,
@@ -349,7 +354,7 @@ pub struct Objective {
     pub list_of_flux_objectives: ListOfFluxObjectives,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
 pub struct ListOfFluxObjectives {
     #[serde(rename = "fluxObjective", default)]
     pub flux_objectives: Vec<FluxObjective>,
@@ -357,7 +362,7 @@ pub struct ListOfFluxObjectives {
 
 /// Relatively simple container for a model variable weighted by a signed
 /// linear coefficient, defined in the Flux Balance Constraint package.
-#[derive(Debug, Deserialize, PartialEq, Default, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
 pub struct FluxObjective {
     #[serde(rename = "fbc:coefficient")]
     pub coefficient: Option<f64>,

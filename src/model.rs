@@ -1,6 +1,6 @@
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use super::base_types::{
@@ -25,7 +25,7 @@ use super::list_of::*;
 ///     "mmol_per_gDW_per_hr"
 /// )
 /// ```
-#[derive(Deserialize, Debug, Default, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Default, PartialEq, Clone)]
 #[serde(rename = "model", rename_all = "camelCase")]
 pub struct ModelRaw {
     pub id: Option<String>,
@@ -61,9 +61,15 @@ impl ModelRaw {
         let raw_model: SBML = quick_xml::de::from_str(doc)?;
         Ok(raw_model.model)
     }
+
+    pub fn to_string(&self) -> Result<String, quick_xml::DeError> {
+        quick_xml::se::to_string(&SBML {
+            model: (*self).clone(),
+        })
+    }
 }
 
-#[derive(Deserialize, Debug, Default, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Default, PartialEq)]
 struct SBML {
     model: ModelRaw,
 }

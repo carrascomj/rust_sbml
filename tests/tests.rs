@@ -1,4 +1,4 @@
-use rust_sbml::{parse_document, Model, ModelUnits, UnitSId, UnitSIdRef};
+use rust_sbml::{parse_document, Model, ModelRaw, ModelUnits, UnitSId, UnitSIdRef};
 
 #[test]
 fn test_simple() {
@@ -15,6 +15,26 @@ fn test_simple() {
         ..Default::default()
     };
     assert_eq!(res.unwrap(), expect)
+}
+
+#[test]
+fn from_desidee() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = ModelRaw::parse(file_str).unwrap();
+    let gen_file_srt = model.to_string().unwrap();
+    println!("{}", gen_file_srt);
+    let model = Model::parse(&gen_file_srt).unwrap();
+
+    assert_eq!(
+        model
+            .objectives
+            .unwrap()
+            .iter()
+            .map(|reac_id| reac_id.to_owned())
+            .next()
+            .unwrap(),
+        "R_BIOMASS_Ecoli_core_w_GAM"
+    );
 }
 
 #[test]
