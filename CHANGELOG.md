@@ -1,3 +1,8 @@
+0.5.1
+-----
+* Remove println statement.
+* Fixes on markdown.
+
 0.5.0
 -----
 * Replaced [roxmltree](https://github.com/RazrFalcon/roxmltree) in favor of [quick-xml](https://github.com/tafia/quick-xml/).
