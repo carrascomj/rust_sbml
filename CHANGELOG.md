@@ -1,3 +1,8 @@
+0.5.2
+-----
+* Fix serilazing of `kind` field in `Unit`.
+* Fix on markdown.
+
 0.5.1
 -----
 * Remove println statement.

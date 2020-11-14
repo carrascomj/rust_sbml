@@ -1,6 +1,6 @@
 [project]
 name = "rust_sbml"
-version = "0.5.1"
+version = "0.5.2"
 description = "Python Bindings to rust_sbml"
 readme = "README.md"
 requires-python = ">=3.6"
