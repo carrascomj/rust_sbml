@@ -143,6 +143,18 @@ pub struct Model {
 }
 
 impl Model {
+    /// Emulating the API of libSBML
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use rust_sbml::Model;
+    /// use std::fs;
+    ///
+    /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
+    /// let document = Model::parse(&ecoli).unwrap();
+    /// println!("{:?}", document.get_list_of_compartments())
+    /// ```
     pub fn get_list_of_compartments(&self) -> Vec<&Compartment> {
         self.compartments.iter().map(|(_key, val)| val).collect()
     }
@@ -156,7 +168,7 @@ impl Model {
     ///
     /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
     /// let document = Model::parse(&ecoli).unwrap();
-    /// println!("{:?}", document.get_list_of_compartments())
+    /// println!("{:?}", document.get_list_of_species())
     /// ```
     pub fn get_list_of_species(&self) -> Vec<&Species> {
         self.species.iter().map(|(_key, val)| val).collect()
@@ -171,23 +183,13 @@ impl Model {
     ///
     /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
     /// let document = Model::parse(&ecoli).unwrap();
-    /// println!("{:?}", document.get_list_of_species())
+    /// println!("{:?}", document.get_list_of_reactions())
     /// ```
     pub fn get_list_of_reactions(&self) -> Vec<&Reaction> {
         self.reactions.iter().map(|(_key, val)| val).collect()
     }
-    /// Emulating the API of libSBML
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use rust_sbml::Model;
-    /// use std::fs;
-    ///
-    /// let ecoli = fs::read_to_string("examples/EcoliCore.xml").unwrap();
-    /// let document = Model::parse(&ecoli).unwrap();
-    /// println!("{:?}", document.get_list_of_reactions())
-    /// ```
+    /// Use [`ModelRaw`](./struct.ModelRaw.html) to parse the SBML document
+    /// and then format it into `Model`.
     pub fn parse(doc: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_model = ModelRaw::parse(doc)?;
         // Units used by the model itself
