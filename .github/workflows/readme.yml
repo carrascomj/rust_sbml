@@ -7,7 +7,7 @@ on:
       - trunk
     paths:
       - "README.tpl"
-      - "src/lib.rs"
+      - "**lib.rs"
       - "**readme.yml"
 
 jobs:
