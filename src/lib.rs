@@ -84,7 +84,6 @@
 mod base_types;
 mod list_of;
 mod model;
-#[cfg(not(tarpaulin_include))]
 #[cfg(feature = "default")]
 mod pyo;
 
