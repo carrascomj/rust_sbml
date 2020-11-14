@@ -21,6 +21,5 @@ fn main() {
     </sbml>"#;
     let res = ModelRaw::parse(&example).unwrap();
     println!("{:?}", res);
-    // WARNING: kind fields of Unit are lost on write
     std::fs::write("from_memory.xml", res.to_string().unwrap()).unwrap();
 }
