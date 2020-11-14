@@ -7,9 +7,9 @@ fn test_simple() {
     assert!(res.is_ok());
     let expect = Model {
         model_units: ModelUnits {
-            time_units: Some(UnitSIdRef::SIUnit(UnitSId::Second)),
-            substance_units: Some(UnitSIdRef::SIUnit(UnitSId::Mole)),
-            extent_units: Some(UnitSIdRef::SIUnit(UnitSId::Mole)),
+            time_units: Some(UnitSIdRef::SIUnit(UnitSId::second)),
+            substance_units: Some(UnitSIdRef::SIUnit(UnitSId::mole)),
+            extent_units: Some(UnitSIdRef::SIUnit(UnitSId::mole)),
             ..Default::default()
         },
         ..Default::default()

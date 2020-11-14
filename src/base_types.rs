@@ -1,7 +1,31 @@
 // use mathml::MathNode;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
+
+/// Define an enum (harcoded as pub) with a method `name()` to serialize it as
+/// a string representing its variant; e.g., A::B.name() == "B".
+macro_rules! enum_str {
+    ($(#[$outer:meta])*  // capture the docstring
+        enum $name:ident {
+        $($variant:ident),*,
+    }) => {
+        #[derive(Debug, Hash, PartialEq, Eq, Deserialize, Serialize, Clone)]
+        #[allow(non_camel_case_types)]
+        #[serde(rename_all="camelCase")]
+        pub enum $name {
+            $($variant),*
+        }
+
+        impl $name {
+            const fn name(&self) -> &'static str {
+                match self {
+                    $($name::$variant => stringify!($variant)),*
+                }
+            }
+        }
+    };
+}
 
 /// Combination of [`Unit`](../struct.Unit.html).
 ///
@@ -29,65 +53,70 @@ pub struct ListOfUnits {
 /// exponent, scale and multiplier define how the base unit is being transformed.
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct Unit {
-    /// FIXME: quick_xml fails to serialiaze untagged enums
-    #[serde(default = "unk")]
     pub kind: UnitSIdRef,
     pub exponent: f64,
     pub scale: i64,
     pub multiplier: f64,
 }
 
-fn unk() -> UnitSIdRef {
-    UnitSIdRef::CustomUnit("Unknown".to_string())
-}
-
 /// SBML provides predefined base units, gathered in [`UnitSId`](./enum.UnitSId.html).
 /// Alternatively, one can use arbitrary `CustomUnit`s.
-#[derive(Debug, Deserialize, Serialize, Hash, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Hash, PartialEq, Eq, Clone)]
 #[serde(untagged)]
 pub enum UnitSIdRef {
     SIUnit(UnitSId),
     CustomUnit(String),
 }
 
-/// One of the predefined values of a base unit by SBML level 3.
-#[derive(Debug, Hash, PartialEq, Eq, Deserialize, Serialize, Clone)]
-#[serde(rename_all = "lowercase")]
-pub enum UnitSId {
-    Ampere,
-    Avogadro,
-    Coulomb,
-    Gray,
-    Joule,
-    Litre,
-    Mole,
-    Radian,
-    Steradian,
-    Weber,
-    Dimensionless,
-    Henry,
-    Katal,
-    Lumen,
-    Newton,
-    Tesla,
-    Becquerel,
-    Farad,
-    Hertz,
-    Kelvin,
-    Lux,
-    Ohm,
-    Siemens,
-    Volt,
-    Candela,
-    Gram,
-    Item,
-    Kilogram,
-    Metre,
-    Pascal,
-    Sievert,
-    Watt,
-    Second,
+impl Serialize for UnitSIdRef {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match self {
+            Self::SIUnit(ref unit) => serializer.serialize_str(unit.name()),
+            Self::CustomUnit(s) => serializer.serialize_str(s),
+        }
+    }
 }
+
+enum_str! {
+/// One of the predefined values of a base unit by SBML level 3.
+enum UnitSId {
+    ampere,
+    avogadro,
+    coulomb,
+    gray,
+    joule,
+    litre,
+    mole,
+    radian,
+    steradian,
+    weber,
+    dimensionless,
+    henry,
+    katal,
+    lumen,
+    newton,
+    tesla,
+    becquerel,
+    farad,
+    hertz,
+    kelvin,
+    lux,
+    ohm,
+    siemens,
+    volt,
+    candela,
+    gram,
+    item,
+    kilogram,
+    metre,
+    pascal,
+    sievert,
+    watt,
+    second,
+}}
 
 /// A compartment in SBML represents a bounded space in which species are located.
 ///
@@ -175,7 +204,7 @@ pub struct Species {
 /// .unwrap();
 /// assert_eq!(
 ///     parameter[0].units.to_owned().unwrap(),
-///     UnitSIdRef::SIUnit(UnitSId::Second)
+///     UnitSIdRef::SIUnit(UnitSId::second)
 /// );
 /// assert_eq!(parameter[1].id, "Km1");
 #[cfg_attr(feature = "default", pyclass)]
