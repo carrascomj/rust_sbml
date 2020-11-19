@@ -1,7 +1,7 @@
 use rust_sbml::{parse_document, Model, ModelRaw, ModelUnits, UnitSId, UnitSIdRef};
 
 #[test]
-fn test_simple() {
+fn read_units_succeed() {
     let example = include_str!("test_simple.xml");
     let res = parse_document(example);
     assert!(res.is_ok());
@@ -18,7 +18,7 @@ fn test_simple() {
 }
 
 #[test]
-fn from_desidee() {
+fn read_model_raw_objective_succeeds() {
     let file_str = include_str!("EcoliCore.xml");
     let model = ModelRaw::parse(file_str).unwrap();
     let gen_file_srt = model.to_string().unwrap();
@@ -38,7 +38,7 @@ fn from_desidee() {
 }
 
 #[test]
-fn from_genre() {
+fn read_abstraction_objective_succeeds() {
     let file_str = include_str!("EcoliCore.xml");
     let model = Model::parse(file_str).unwrap();
     assert_eq!(

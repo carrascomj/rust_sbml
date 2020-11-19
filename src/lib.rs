@@ -101,7 +101,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_name() {
+    fn parse_minimal_model_with_reactions() {
         let reactions: Result<Vec<Reaction>, quick_xml::DeError> = quick_xml::de::from_str(
             "<reaction id='J1' reversible='false'>
              <listOfReactants>
