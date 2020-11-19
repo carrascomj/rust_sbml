@@ -4,11 +4,11 @@ import cobra
 import rust_sbml
 import pytest
 
-pytest_benchmark_unavailable = True
+pytest_benchmark_unavailable = False
 try:
     import pytest_benchmark  # noqa: F401
 except Exception:
-    pytest_benchmark_unavailable = False
+    pytest_benchmark_unavailable = True
 
 
 benchmark = pytest.mark.skipif(
@@ -167,17 +167,21 @@ def test_consistency():
     assert round(res, 4) == round(expr, 4)
 
 
+@benchmark
 def test_benchmark_rust_sbml_small(benchmark):
     benchmark(sbml_to_model, "examples/EcoliCore.xml")
 
 
+@benchmark
 def test_benchmark_libsbml_small(benchmark):
     benchmark(cobra.io.read_sbml_model, "examples/EcoliCore.xml")
 
 
+@benchmark
 def test_benchmark_rust_sbml_big(benchmark):
     benchmark(sbml_to_model, "tests_integration/RECON1.xml")
 
 
+@benchmark
 def test_benchmark_libsbml_big(benchmark):
     benchmark(cobra.io.read_sbml_model, "tests_integration/RECON1.xml")
