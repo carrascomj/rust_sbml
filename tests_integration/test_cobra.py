@@ -6,7 +6,7 @@ import pytest
 
 pytest_benchmark_unavailable = True
 try:
-    pytest.importorskip("pytest_benchmark")
+    import pytest_benchmark  # noqa: F401
 except Exception:
     pytest_benchmark_unavailable = False
 
