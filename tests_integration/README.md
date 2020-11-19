@@ -1,5 +1,5 @@
 # Integration tests
-This tests use [pytest](https://docs.pytest.org/en/stable/) to ensure two
+These tests use [pytest](https://docs.pytest.org/en/stable/) to ensure two
 objectives (during CI):
 1. Test the python interface at [`src/pyo.rs`](https://github.com/carrascomj/rust_sbml/blob/trunk/src/pyo.rs).
 2. Ensure the parser is consistent with [libSBML](https://github.com/sbmlteam/libsbml).
