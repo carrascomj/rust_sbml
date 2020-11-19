@@ -2,6 +2,19 @@ from collections import defaultdict
 
 import cobra
 import rust_sbml
+import pytest
+
+pytest_benchmark_unavailable = True
+try:
+    pytest.importorskip("pytest_benchmark")
+except Exception:
+    pytest_benchmark_unavailable = False
+
+
+benchmark = pytest.mark.skipif(
+    pytest_benchmark_unavailable,
+    reason="pytest-benchmark required to run benchmarks"
+)
 
 
 def sbml_to_model(path, **kwargs):
@@ -121,9 +134,7 @@ def sbml_to_model(path, **kwargs):
     obj_direction = "max"
     coefficients = {}
     try:
-        objective_reaction = cobra_model.reactions.get_by_id(
-                model.getObjectives()[0]
-        )
+        objective_reaction = cobra_model.reactions.get_by_id(model.getObjectives()[0])
     except KeyError:
         raise cobra.CobraSBMLError("Objective reaction not found")
     try:
@@ -154,3 +165,19 @@ def test_consistency():
     model = cobra.io.read_sbml_model("examples/EcoliCore.xml")
     expr = model.slim_optimize()
     assert round(res, 4) == round(expr, 4)
+
+
+def test_benchmark_rust_sbml_small(benchmark):
+    benchmark(sbml_to_model, "examples/EcoliCore.xml")
+
+
+def test_benchmark_libsbml_small(benchmark):
+    benchmark(cobra.io.read_sbml_model, "examples/EcoliCore.xml")
+
+
+def test_benchmark_rust_sbml_big(benchmark):
+    benchmark(sbml_to_model, "tests_integration/RECON1.xml")
+
+
+def test_benchmark_libsbml_big(benchmark):
+    benchmark(cobra.io.read_sbml_model, "tests_integration/RECON1.xml")
