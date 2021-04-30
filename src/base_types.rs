@@ -64,6 +64,7 @@ pub struct Unit {
 #[derive(Debug, Deserialize, Hash, PartialEq, Eq, Clone)]
 #[serde(untagged)]
 pub enum UnitSIdRef {
+    #[allow(clippy::upper_case_acronyms)]
     SIUnit(UnitSId),
     CustomUnit(String),
 }

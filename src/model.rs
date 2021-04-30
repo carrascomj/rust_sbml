@@ -58,19 +58,19 @@ pub struct ModelRaw {
 
 impl ModelRaw {
     pub fn parse(doc: &str) -> Result<Self, quick_xml::DeError> {
-        let raw_model: SBML = quick_xml::de::from_str(doc)?;
+        let raw_model: Sbml = quick_xml::de::from_str(doc)?;
         Ok(raw_model.model)
     }
 
     pub fn to_string(&self) -> Result<String, quick_xml::DeError> {
-        quick_xml::se::to_string(&SBML {
+        quick_xml::se::to_string(&Sbml {
             model: (*self).clone(),
         })
     }
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, PartialEq)]
-struct SBML {
+struct Sbml {
     model: ModelRaw,
 }
 
@@ -101,7 +101,7 @@ impl From<&ModelRaw> for ModelUnits {
     }
 }
 
-type HL<T> = HashMap<String, T>;
+type Hl<T> = HashMap<String, T>;
 /// Abstraction over the SBML specification. It traverses each top-level
 /// listOF_ and provides `HashMaps<id, object>` instead. In addition the model
 /// units are gathered in an [`ModelUnits`](./struct.ModelUnits.html) struct.
@@ -132,12 +132,12 @@ pub struct Model {
     pub metaid: Option<String>,
     pub name: Option<String>,
     pub model_units: ModelUnits,
-    pub initial_assignments: HL<InitialAssignment>,
-    pub parameters: HL<Parameter>,
-    pub species: HL<Species>,
-    pub reactions: HL<Reaction>,
-    pub compartments: HL<Compartment>,
-    pub unit_definitions: HL<HashMap<UnitSIdRef, Unit>>,
+    pub initial_assignments: Hl<InitialAssignment>,
+    pub parameters: Hl<Parameter>,
+    pub species: Hl<Species>,
+    pub reactions: Hl<Reaction>,
+    pub compartments: Hl<Compartment>,
+    pub unit_definitions: Hl<HashMap<UnitSIdRef, Unit>>,
     pub constraints: Vec<Constraint>,
     pub objectives: Option<Vec<String>>,
 }

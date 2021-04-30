@@ -108,11 +108,8 @@ impl Model {
     fn getParameter(&self, query: String) -> Option<Parameter> {
         self.parameters.get(&query).cloned()
     }
-    fn getObjectives(&self) -> PyResult<Vec<String>> {
-        Ok(match self.objectives.to_owned() {
-            Some(o) => o,
-            _ => Vec::new(),
-        })
+    fn getObjectives(&self) -> Vec<String> {
+        self.objectives.to_owned().unwrap_or_default()
     }
     #[getter]
     fn id(&self) -> Option<String> {
