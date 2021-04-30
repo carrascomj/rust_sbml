@@ -1,118 +1,112 @@
 #![allow(non_snake_case)]
+
 use super::{Compartment, Model, Parameter, Reaction, Species, SpeciesReference};
 use pyo3::prelude::*;
 
 #[pymethods]
 impl Species {
     #[getter]
-    fn id(&self) -> PyResult<String> {
-        Ok(self.id.to_owned())
+    fn id(&self) -> &str {
+        self.id.as_str()
     }
-    fn getCompartment(&self) -> PyResult<String> {
-        Ok(self.compartment.to_owned())
+    fn getCompartment(&self) -> &str {
+        self.compartment.as_str()
     }
 }
 
 #[pymethods]
 impl Compartment {
     #[getter]
-    fn id(&self) -> PyResult<String> {
-        Ok(self.id.to_owned())
+    fn id(&self) -> &str {
+        self.id.as_str()
     }
     #[getter]
-    fn name(&self) -> PyResult<String> {
-        Ok(match self.name.to_owned() {
+    fn name(&self) -> &str {
+        match &self.name {
             Some(s) => s,
-            _ => "".to_owned(),
-        })
+            _ => "",
+        }
     }
 }
 
 #[pymethods]
 impl Reaction {
     #[getter]
-    fn id(&self) -> PyResult<String> {
-        Ok(self.id.to_owned())
+    fn id(&self) -> &str {
+        self.id.as_str()
     }
     #[getter]
-    fn name(&self) -> PyResult<String> {
-        Ok(match self.name.to_owned() {
+    fn name(&self) -> &str {
+        match &self.name {
             Some(s) => s,
-            _ => "".to_string(),
-        })
+            _ => "",
+        }
     }
-    fn getListOfReactants(&self) -> PyResult<Vec<SpeciesReference>> {
-        Ok(self.list_of_reactants.to_owned().species_references)
+    fn getListOfReactants(&self) -> Vec<SpeciesReference> {
+        self.list_of_reactants.species_references.to_owned()
     }
-    fn getListOfProducts(&self) -> PyResult<Vec<SpeciesReference>> {
-        Ok(self.list_of_products.to_owned().species_references)
+    fn getListOfProducts(&self) -> Vec<SpeciesReference> {
+        self.list_of_products.species_references.to_owned()
     }
-    fn getLowerFluxBound(&self) -> PyResult<String> {
-        Ok(match self.lower_bound.to_owned() {
+    fn getLowerFluxBound(&self) -> &str {
+        match &self.lower_bound {
             Some(s) => s,
-            _ => "".to_string(),
-        })
+            _ => "",
+        }
     }
-    fn getUpperFluxBound(&self) -> PyResult<String> {
-        Ok(match self.upper_bound.to_owned() {
+    fn getUpperFluxBound(&self) -> &str {
+        match &self.upper_bound {
             Some(s) => s,
-            _ => "".to_string(),
-        })
+            None => "",
+        }
     }
 }
 
 #[pymethods]
 impl SpeciesReference {
     #[getter]
-    fn id(&self) -> PyResult<String> {
-        Ok(self.species.to_owned())
+    fn id(&self) -> &str {
+        self.species.as_str()
     }
-    fn getStoichiometry(&self) -> PyResult<f64> {
-        Ok(match self.stoichiometry {
-            Some(s) => s,
-            _ => 1.,
-        })
+    fn getStoichiometry(&self) -> Option<f64> {
+        self.stoichiometry
     }
 }
 
 #[pymethods]
 impl Parameter {
-    fn getValue(&self) -> PyResult<f64> {
-        Ok(match self.value {
-            Some(p) => p,
-            _ => panic!("no value"),
-        })
+    fn getValue(&self) -> Option<f64> {
+        self.value
     }
-    fn getConstant(&self) -> PyResult<bool> {
-        Ok(self.constant)
+    fn getConstant(&self) -> bool {
+        self.constant
     }
 }
 
 #[pymethods]
 impl Model {
     #[new]
-    fn new(doc: String) -> Self {
-        let file_str = std::fs::read_to_string(&doc).unwrap();
+    fn new(doc: &str) -> Self {
+        let file_str = std::fs::read_to_string(doc).unwrap();
         match Model::parse(&file_str) {
             Ok(m) => m,
             Err(e) => panic!("kai_sbml Couldn't parse {}. Error: {:?}", doc, e),
         }
     }
-    fn getListOfCompartments(&self) -> PyResult<Vec<Compartment>> {
-        Ok(self
-            .compartments
+    fn getListOfCompartments(&self) -> Vec<Compartment> {
+        self.compartments
             .iter()
             .map(|(_, n)| n.to_owned())
-            .collect())
+            .collect()
     }
-    fn getListOfSpecies(&self) -> PyResult<Vec<Species>> {
-        Ok(self.species.iter().map(|(_, n)| n.to_owned()).collect())
+    fn getListOfSpecies(&self) -> Vec<Species> {
+        self.species.iter().map(|(_, n)| n.to_owned()).collect()
     }
-    fn getListOfReactions(&self) -> PyResult<Vec<Reaction>> {
-        Ok(self.reactions.iter().map(|(_, n)| n.to_owned()).collect())
+    fn getListOfReactions(&self) -> Vec<Reaction> {
+        self.reactions.iter().map(|(_, n)| n.to_owned()).collect()
     }
-    fn getParameter(&self, query: String) -> PyResult<Parameter> {
-        Ok(self.parameters[&query].to_owned())
+    fn getParameter(&self, query: String) -> Option<Parameter> {
+        self.parameters.get(&query).cloned()
     }
     fn getObjectives(&self) -> PyResult<Vec<String>> {
         Ok(match self.objectives.to_owned() {
@@ -121,25 +115,16 @@ impl Model {
         })
     }
     #[getter]
-    fn id(&self) -> PyResult<String> {
-        Ok(match self.id.to_owned() {
-            Some(s) => s,
-            None => "".to_string(),
-        })
+    fn id(&self) -> Option<String> {
+        self.id.to_owned()
     }
     #[getter]
-    fn metaid(&self) -> PyResult<String> {
-        Ok(match self.metaid.to_owned() {
-            Some(s) => s,
-            None => "".to_string(),
-        })
+    fn metaid(&self) -> Option<String> {
+        self.metaid.to_owned()
     }
     #[getter]
-    fn name(&self) -> PyResult<String> {
-        Ok(match self.name.to_owned() {
-            Some(s) => s,
-            None => "".to_string(),
-        })
+    fn name(&self) -> Option<String> {
+        self.name.to_owned()
     }
 }
 
