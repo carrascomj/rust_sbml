@@ -145,6 +145,7 @@ pub struct Compartment {
     pub units: Option<UnitSIdRef>,
     pub id: String,
     pub name: Option<String>,
+    pub sbo_term: Option<String>,
     pub spatial_dimensions: Option<f64>,
     pub size: Option<f64>,
     pub constant: bool,
@@ -179,6 +180,9 @@ pub struct Compartment {
 #[serde(rename_all = "camelCase")]
 pub struct Species {
     pub id: String,
+    pub name: Option<String>,
+    pub meta_id: Option<String>,
+    pub sbo_term: Option<String>,
     pub compartment: String,
     pub initial_concentration: Option<f64>,
     pub initial_amount: Option<f64>,
