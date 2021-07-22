@@ -82,21 +82,19 @@
 //! * Test suite with python calls.
 //! * Test suite with libsbml comparison trough cobrapy.
 mod base_types;
-mod unit;
-mod mathml;
 mod list_of;
+mod mathml;
 mod model;
 #[cfg(feature = "default")]
 mod pyo;
+mod unit;
 
 pub use base_types::{
-    Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
-    SpeciesReference,
+    Compartment, Constraint, Function, InitialAssignment, Objective, Parameter, Reaction, Rule,
+    Species, SpeciesReference,
 };
+pub use mathml::{Math, MathNode};
 pub use unit::{Unit, UnitSId, UnitSIdRef};
-pub use mathml::{
-    Math, MathNode
-};
 
 pub use model::{parse_document, Model, ModelRaw, ModelUnits};
 #[cfg(feature = "default")]
