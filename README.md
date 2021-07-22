@@ -78,17 +78,17 @@ print(reaction.getListOfReactants())
 ```
 
 ### Milestones
-* [x] `getListOfSpecies()` (id, name)
-* [x] `getListOfCompartments()` (id, name)
-* [x] `getListOfReactions()` (id, name)
-  * [x] `.getListOfReactants()` (id, name)
-  * [x] .`getListOfProducts()` (id, name)
-* [x] Capable of retrieving FBC bounds.
-* [x] Published to pypi
-* [ ] Kinetic Laws.
-* [ ] Metadata.
-* [x] Test suite with python calls.
-* [x] Test suite with libsbml comparison trough cobrapy.
+* `getListOfSpecies()` (id, name)
+* `getListOfCompartments()` (id, name)
+* `getListOfReactions()` (id, name)
+  * `.getListOfReactants()` (id, name)
+  * .`getListOfProducts()` (id, name)
+* Capable of retrieving FBC bounds.
+* Published to pypi
+* _(Missing) Kinetic Laws_.
+* _(Missing) Metadata_.
+* Test suite with python calls.
+* Test suite with libsbml comparison trough cobrapy.
 
 ## License
 
