@@ -338,7 +338,7 @@ enum InnerConstraint {
 /// which a model is designed to operate.
 ///
 /// # Example
-/// 
+///
 /// Constraint species “S1” so that $1 \le S1 \le 100$:
 ///
 /// ```
@@ -375,23 +375,23 @@ pub struct Constraint {
 }
 
 // TODO: math and message should be parsed by implementing Deserialize and
-// Serialized instead of this methods
+// Serialize instead of these methods
 impl Constraint {
     pub fn math(&self) -> Option<&Math> {
         for inner_element in self.inner.iter() {
             if let InnerConstraint::Math(math) = inner_element {
-                return Some(math)
+                return Some(math);
             }
         }
-        return None
+        None
     }
     pub fn message(&self) -> Option<&str> {
         for inner_element in self.inner.iter() {
-            if let InnerConstraint::Message( message ) = inner_element {
-                return Some(message.content.as_str())
+            if let InnerConstraint::Message(message) = inner_element {
+                return Some(message.content.as_str());
             }
         }
-        return None
+        None
     }
 }
 
