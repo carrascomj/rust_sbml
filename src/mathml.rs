@@ -27,7 +27,7 @@ pub struct Ci {
 
 /// Content identifier <ci>
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
-#[serde(rename="lowercase")]
+#[serde(rename = "lowercase")]
 pub struct Bvar {
     #[serde(rename = "$value")]
     ci: Ci,
