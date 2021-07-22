@@ -1,6 +1,20 @@
+Next release
+------------
+* Naive implementation of MathML.
+* Add `<math>` attribute to `InitialAssignment`.
+* Implement `Rule` and `Function` base types.
+
+0.5.3
+-----
+* Benchmark against libSBML (through python's [cobrapy](https://github.com/opencobra/cobrapy/))
+* Enhance pyo bindings with some removal of superfluous `PyResult`s.
+* Add missing SBase attributes to `Species` and `Compartment`.
+* Improve test structure and docs.
+
+
 0.5.2
 -----
-* Fix serilazing of `kind` field in `Unit`.
+* Fix serializing of `kind` field in `Unit`.
 * Fix on markdown.
 
 0.5.1
