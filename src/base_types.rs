@@ -185,11 +185,38 @@ pub struct ListOfSpeciesReferences {
     pub species_references: Vec<SpeciesReference>,
 }
 
+/// The [`KineticLaw`] object within a Reaction object can contain a
+/// ListOfLocalParameters object containing the definitions of local parameter
+/// that are only accessible within the scope of that particular reaction.
+#[derive(Debug, PartialEq, Clone, Deserialize, Serialize)]
+pub struct LocalParameter {
+    id: String,
+    #[serde(rename = "sboTerm")]
+    sbo_term: Option<String>,
+    value: Option<f32>,
+    units: UnitSIdRef,
+}
+
+#[derive(Debug, PartialEq, Clone, Default, Deserialize, Serialize)]
+pub struct ListOfLocalParameters {
+    #[serde(rename = "localParameter")]
+    pub local_parameter: Vec<LocalParameter>,
+}
+
+/// The KineticLaw object class is used to describe the rate at which the
+/// process defined by the Reaction takes place.
+#[derive(Debug, PartialEq, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct KineticLaw {
+    math: Math,
+    id: Option<String>,
+    sbo_term: Option<String>,
+    list_of_local_parameters: ListOfLocalParameters,
+}
+
 /// A reaction in SBML represents any kind of process that can change the
 /// quantity of one or more species in a model. Examples of such processes can
 /// include transformation, transport, molecular interactions, and more.
-///
-/// TODO: implement KineticLaw
 ///
 /// # Example
 ///
@@ -201,10 +228,22 @@ pub struct ListOfSpeciesReferences {
 /// "<reaction id='J1' reversible='false' fbc:lowerFluxBound='-20'>
 ///         <listOfReactants>
 ///             <speciesReference species='X0' stoichiometry='2' constant='true'/>
-/// </listOfReactants></reaction></listOfReactions></model>",
+/// </listOfReactants>
+/// <kineticLaw>
+/// <math xmlns='http://www.w3.org/1998/Math/MathML'>
+/// <apply>
+/// <times/> <ci> k </ci> <ci> S2 </ci> <ci> X0 </ci> <ci> c1 </ci>
+/// </apply>
+/// </math>
+/// <listOfLocalParameters>
+/// <localParameter id='k' value='0.1' units='per_concent_per_time'/>
+/// </listOfLocalParameters>
+/// </kineticLaw></reaction>"
 /// )
 /// .unwrap();
+///
 /// println!("{:?}", reactions);
+/// assert!(reactions.kinetic_law.is_some());
 /// assert!(reactions
 ///     .list_of_reactants
 ///     .species_references
@@ -224,6 +263,7 @@ pub struct Reaction {
     pub compartment: Option<String>,
     pub name: Option<String>,
     pub sbo_term: Option<String>,
+    pub kinetic_law: Option<KineticLaw>,
     #[serde(rename = "fbc:lowerFluxBound")]
     pub lower_bound: Option<String>,
     #[serde(rename = "fbc:lowerUpperBound")]
