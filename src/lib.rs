@@ -90,8 +90,8 @@ mod pyo;
 mod unit;
 
 pub use base_types::{
-    Compartment, Constraint, Function, InitialAssignment, Objective, Parameter, Reaction, Rule,
-    Species, SpeciesReference,
+    Compartment, Constraint, FunctionDefinition, InitialAssignment, Objective, Parameter, Reaction,
+    Rule, Species, SpeciesReference,
 };
 pub use mathml::{Math, MathNode};
 pub use unit::{Unit, UnitSId, UnitSIdRef};

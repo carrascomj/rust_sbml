@@ -230,16 +230,54 @@ pub struct Reaction {
     pub upper_bound: Option<String>,
 }
 
+/// The FunctionDefinition object associates an identifier with a function
+/// definition. This identifier can then be4 used as the function called in
+/// subsequent MathML apply elements.
+///
+/// # Example
+/// ```
+/// use quick_xml::de::from_str;
+/// use rust_sbml::FunctionDefinition;
+///
+/// let function: FunctionDefinition = from_str(
+/// r#"<functionDefinition id="pow3">
+///     <math xmlns="http://www.w3.org/1998/Math/MathML"
+///     xmlns:sbml="http://www.sbml.org/sbml/level3/version2/core">
+///         <lambda>
+///             <bvar><ci> x </ci></bvar>
+///             <apply> <power/> <ci> x </ci> <cn sbml:units="dimensionless"> 3 </cn>
+///             </apply>
+///         </lambda>
+///     </math>
+/// </functionDefinition>"#).unwrap();
+///
+/// assert_eq!(function.id, "pow3");
+/// ```
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
-pub struct Function {
-    math: Math,
+#[serde(rename_all = "camelCase")]
+pub struct FunctionDefinition {
+    #[serde(rename = "$value")]
+    pub math: Math,
+    pub id: String,
+    pub sbo_term: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
 pub enum Rule {
-    AlgebraicRule { math: Math },
-    AssignmentRule { math: Math, variable: String },
-    RateRule { math: Math, variable: String },
+    AlgebraicRule {
+        #[serde(rename = "$value")]
+        math: Math,
+    },
+    AssignmentRule {
+        #[serde(rename = "$value")]
+        math: Math,
+        variable: String,
+    },
+    RateRule {
+        #[serde(rename = "$value")]
+        math: Math,
+        variable: String,
+    },
 }
 
 /// The Constraint object is a mechanism for stating the assumptions under which
