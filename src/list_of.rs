@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 
 use super::base_types::{
     Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
-    UnitDefinition,
 };
+use super::unit::UnitDefinition;
 
 #[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
 pub struct ListOfUnitDefinitions {

@@ -70,18 +70,20 @@
 //! ```
 //!
 //! ## Milestones
-//! * [x] `getListOfSpecies()` (id, name)
-//! * [x] `getListOfCompartments()` (id, name)
-//! * [x] `getListOfReactions()` (id, name)
-//!   * [x] `.getListOfReactants()` (id, name)
-//!   * [x] .`getListOfProducts()` (id, name)
-//! * [x] Capable of retrieving FBC bounds.
-//! * [x] Published to pypi
-//! * [ ] Kinetic Laws.
-//! * [ ] Metadata.
-//! * [x] Test suite with python calls.
-//! * [x] Test suite with libsbml comparison trough cobrapy.
+//! * \[x\] `getListOfSpecies()` (id, name)
+//! * \[x\] `getListOfCompartments()` (id, name)
+//! * \[x\] `getListOfReactions()` (id, name)
+//!   * \[x\] `.getListOfReactants()` (id, name)
+//!   * \[x\] .`getListOfProducts()` (id, name)
+//! * \[x\] Capable of retrieving FBC bounds.
+//! * \[x\] Published to pypi
+//! * \[ \] Kinetic Laws.
+//! * \[ \] Metadata.
+//! * \[x\] Test suite with python calls.
+//! * \[x\] Test suite with libsbml comparison trough cobrapy.
 mod base_types;
+mod unit;
+mod mathml;
 mod list_of;
 mod model;
 #[cfg(feature = "default")]
@@ -89,7 +91,11 @@ mod pyo;
 
 pub use base_types::{
     Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
-    SpeciesReference, Unit, UnitSId, UnitSIdRef,
+    SpeciesReference,
+};
+pub use unit::{Unit, UnitSId, UnitSIdRef};
+pub use mathml::{
+    Math, MathNode
 };
 
 pub use model::{parse_document, Model, ModelRaw, ModelUnits};

@@ -4,8 +4,9 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use super::base_types::{
-    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species, Unit, UnitSIdRef,
+    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species
 };
+use super::{UnitSIdRef,Unit};
 use super::list_of::*;
 
 /// SBML model as defined in the [SBML Level 3 Version 2 core](http://sbml.org/Documents/Specifications).
@@ -75,7 +76,7 @@ struct Sbml {
 }
 
 /// Bucket struct to hold all units defined on the top level of
-/// [`ModelRaw`](./struct.ModelRaw.html).
+/// [`ModelRaw`].
 #[derive(Debug, Default, PartialEq)]
 pub struct ModelUnits {
     pub substance_units: Option<UnitSIdRef>,
@@ -104,7 +105,7 @@ impl From<&ModelRaw> for ModelUnits {
 type Hl<T> = HashMap<String, T>;
 /// Abstraction over the SBML specification. It traverses each top-level
 /// listOF_ and provides `HashMaps<id, object>` instead. In addition the model
-/// units are gathered in an [`ModelUnits`](./struct.ModelUnits.html) struct.
+/// units are gathered in an [`ModelUnits`] struct.
 ///
 /// # Example
 ///
@@ -188,7 +189,7 @@ impl Model {
     pub fn get_list_of_reactions(&self) -> Vec<&Reaction> {
         self.reactions.iter().map(|(_key, val)| val).collect()
     }
-    /// Use [`ModelRaw`](./struct.ModelRaw.html) to parse the SBML document
+    /// Use [`ModelRaw`] to parse the SBML document
     /// and then format it into `Model`.
     pub fn parse(doc: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_model = ModelRaw::parse(doc)?;
@@ -281,7 +282,7 @@ impl Model {
     }
 }
 
-/// Shortcut to [`Model::parse`](./struct.Model.html).
+/// Shortcut to [`Model::parse`](Model::parse).
 pub fn parse_document(doc: &str) -> Result<Model, Box<dyn std::error::Error>> {
     Model::parse(doc)
 }
