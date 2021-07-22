@@ -25,9 +25,19 @@ pub struct Ci {
     ci_type: Option<String>,
 }
 
+/// Content identifier <ci>
+#[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
+#[serde(rename="lowercase")]
+pub struct Bvar {
+    #[serde(rename = "$value")]
+    ci: Ci,
+    ci_type: Option<String>,
+}
+
+/// Number type (default to Real)
 #[derive(Debug, Serialize, Eq, PartialEq, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
-pub enum Number {
+pub enum NumberType {
     Real,
     Integer,
     Rational,
@@ -37,21 +47,36 @@ pub enum Number {
     ENotation,
 }
 
-impl Default for Number {
+impl Default for NumberType {
     fn default() -> Self {
-        Number::Real
+        Self::Real
+    }
+}
+
+/// Base of a number (default to 10)
+#[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
+struct Base(u32);
+
+impl Default for Base {
+    fn default() -> Self {
+        Base(10)
     }
 }
 
 /// Numbers <cn>
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Cn {
     #[serde(rename = "$value")]
     content: String,
     #[serde(rename = "sbml:units")]
     unit: Option<UnitSIdRef>,
     #[serde(rename = "type", default)]
-    ci_type: Number,
+    ci_type: NumberType,
+    #[serde(default)]
+    base: Base,
+    definition_url: Option<String>,
+    enconding: Option<String>,
 }
 
 /// Main node of MathML
@@ -72,6 +97,11 @@ pub enum MathNode {
     Cn(Cn),
     Comment(String),
     PI(String, Option<String>),
+    Lambda {
+        #[serde(rename = "$value")]
+        children: Vec<MathNode>,
+    },
+    Bvar,
     // rest of operations
     Factorial,
     Minus,
