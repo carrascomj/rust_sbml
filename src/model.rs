@@ -51,8 +51,10 @@ pub struct ModelRaw {
     pub list_of_reactions: ListOfReactions,
     #[serde(default)]
     pub list_of_constraints: ListOfConstraints,
-    #[serde(rename = "listOfObjectives", default)]
+    #[serde(default)]
     pub list_of_objectives: Option<ListOfObjectives>,
+    pub list_of_rules: Option<ListOfRules>,
+    pub list_of_function_definitions: Option<ListOfFunctionDefinitions>,
 }
 
 impl ModelRaw {

@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use super::base_types::{
-    Compartment, Constraint, InitialAssignment, Objective, Parameter, Reaction, Species,
+    Compartment, Constraint, FunctionDefinition, InitialAssignment, Objective, Parameter, Reaction,
+    Rule, Species,
 };
 use super::unit::UnitDefinition;
 
@@ -50,4 +51,16 @@ pub struct ListOfConstraints {
 pub struct ListOfObjectives {
     #[serde(rename = "objective", default)]
     pub objectives: Vec<Objective>,
+}
+
+#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+pub struct ListOfRules {
+    #[serde(rename = "$value", default)]
+    pub rules: Vec<Rule>,
+}
+
+#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+pub struct ListOfFunctionDefinitions {
+    #[serde(rename = "$value", default)]
+    pub rules: Vec<FunctionDefinition>,
 }
