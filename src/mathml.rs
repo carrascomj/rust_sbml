@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-use serde;
 use super::UnitSIdRef;
+use serde::{Deserialize, Serialize};
 
 /// Math attribute which contains MathNodes of the very partially implemented
 /// [MathML version 3.0 spec](https://www.w3.org/TR/2014/REC-MathML3-20140410).
@@ -9,7 +8,6 @@ pub struct Math {
     #[serde(rename = "$value")]
     content: MathNode,
 }
-
 
 /// Content identifier <ci>
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
@@ -45,7 +43,6 @@ impl Default for Number {
     }
 }
 
-
 /// Numbers <cn>
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
 pub struct Cn {
@@ -69,7 +66,7 @@ pub enum MathNode {
     Csymbol {
         cd: Option<String>,
         encoding: Option<String>,
-        #[serde(rename="$value")]
+        #[serde(rename = "$value")]
         children: Vec<MathNode>,
     },
     Cn(Cn),
@@ -155,7 +152,7 @@ pub enum MathNode {
     Intersect,
     Cartesianproduct,
     Compose,
-    #[serde(rename="fn")]
+    #[serde(rename = "fn")]
     Fun,
     Int,
     Sum,

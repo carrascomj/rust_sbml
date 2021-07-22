@@ -3,11 +3,9 @@ use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use super::base_types::{
-    Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species
-};
-use super::{UnitSIdRef,Unit};
+use super::base_types::{Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species};
 use super::list_of::*;
+use super::{Unit, UnitSIdRef};
 
 /// SBML model as defined in the [SBML Level 3 Version 2 core](http://sbml.org/Documents/Specifications).
 ///

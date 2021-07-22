@@ -1,9 +1,9 @@
 // use mathml::MathNode;
+use super::mathml::Math;
+use super::UnitSIdRef;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
-use super::mathml::Math;
-use super::UnitSIdRef;
 
 /// A compartment in SBML represents a bounded space in which species are located.
 ///
