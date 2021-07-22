@@ -262,17 +262,55 @@ pub struct FunctionDefinition {
     pub sbo_term: Option<String>,
 }
 
+/// Rules provide additional ways to define the values of variables in a model, their
+/// relationships, and the dynamical behaviors of those variables. Rules enable the encoding of
+/// relationships that cannot be expressed using [`Reaction`]s alone nor by
+/// an [`InitialAssignment`].
+///
+/// There are three function forms that involve a variable $x$; a function $f$;
+/// $V$, a vector which does not include $x$; and $W$, a vector which may
+/// include $x$.
+///
+/// # Example
+///
+/// The expression $k = \frac{k3}{k2}$ (from [the SBML3v2 spec](http://sbml.org/Special/specifications/sbml-level-3/version-2/core/release-2/sbml-level-3-version-2-release-2-core.pdf)):
+///
+/// ```
+/// use quick_xml::de::from_str;
+/// use rust_sbml::Rule;
+///
+/// let rule: Rule = from_str(
+/// r#"<assignmentRule variable="k">
+/// <math xmlns="http://www.w3.org/1998/Math/MathML">
+/// <apply>
+/// <divide/>
+/// <ci> k3 </ci>
+/// <ci> k2 </ci>
+/// </apply>
+/// </math>
+/// </assignmentRule>"#).unwrap();
+///
+/// if let Rule::AssignmentRule { variable: k, .. } = rule {
+///     assert_eq!(k.as_str(), "k");
+/// } else {
+///     panic!("Rule was not correctly parsed!")
+/// }
+/// ```
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub enum Rule {
+    /// $0 = f(W)$
     AlgebraicRule {
         #[serde(rename = "$value")]
         math: Math,
     },
+    /// $x = f(V)$ (does not allow algebraic loops)
     AssignmentRule {
         #[serde(rename = "$value")]
         math: Math,
         variable: String,
     },
+    /// $\frac{dx}{dt} = f(W)$
     RateRule {
         #[serde(rename = "$value")]
         math: Math,
