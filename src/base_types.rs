@@ -318,16 +318,81 @@ pub enum Rule {
     },
 }
 
-/// The Constraint object is a mechanism for stating the assumptions under which
-/// a model is designed to operate.
+/// A XML `<message>` node.
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[serde(rename = "message")]
+struct Message {
+    #[serde(rename = "$value")]
+    pub content: String,
+}
+
+/// A `<message>` or a `<math>` node (inside [`Constraint`]).
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[serde(rename_all = "camelCase")]
+enum InnerConstraint {
+    Message(Message),
+    Math(Math),
+}
+
+/// The Constraint object is a mechanism for stating the assumptions under
+/// which a model is designed to operate.
 ///
-/// TODO: MathML not integrated
+/// # Example
+/// 
+/// Constraint species “S1” so that $1 \le S1 \le 100$:
+///
+/// ```
+/// use quick_xml::de::from_str;
+/// use rust_sbml::Constraint;
+///
+/// let constraint: Constraint = from_str(
+/// r#"<constraint>
+///     <math xmlns="http://www.w3.org/1998/Math/MathML"
+///             xmlns:sbml="http://www.sbml.org/sbml/level3/version2/core">
+///         <apply>
+///             <and/>
+///             <apply> <lt/> <cn sbml:units="mole"> 1 </cn> <ci> S1 </ci>
+///             </apply>
+///             <apply> <lt/> <ci> S1 </ci> <cn sbml:units="mole"> 100 </cn>
+///             </apply>
+///         </apply>
+///     </math>
+///     <message>
+///     <p xmlns="http://www.w3.org/1999/xhtml"> Species S1 is out of range. </p>
+///     </message>
+/// </constraint>"#).unwrap();
+///
+/// assert_eq!(constraint.message().unwrap(), "Species S1 is out of range.");
+/// assert!(constraint.math().is_some())
+/// ```
 #[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
 pub struct Constraint {
-    // pub math: Option<MathNode>,
-    pub message: String,
+    #[serde(rename = "$value", default)]
+    inner: Vec<InnerConstraint>,
+    pub id: Option<String>,
     #[serde(rename = "sboTerm")]
     pub sbo_term: Option<String>,
+}
+
+// TODO: math and message should be parsed by implementing Deserialize and
+// Serialized instead of this methods
+impl Constraint {
+    pub fn math(&self) -> Option<&Math> {
+        for inner_element in self.inner.iter() {
+            if let InnerConstraint::Math(math) = inner_element {
+                return Some(math)
+            }
+        }
+        return None
+    }
+    pub fn message(&self) -> Option<&str> {
+        for inner_element in self.inner.iter() {
+            if let InnerConstraint::Message( message ) = inner_element {
+                return Some(message.content.as_str())
+            }
+        }
+        return None
+    }
 }
 
 /// The Flux Balance Constraints package of SBML defines extensions for the
