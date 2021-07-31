@@ -114,7 +114,7 @@ pub struct Parameter {
 ///
 /// ```
 /// use quick_xml::de::from_str;
-/// use rust_sbml::{InitialAssignment, MathNode};
+/// use rust_sbml::{InitialAssignment, mathml::MathNode};
 ///
 /// let initial_assg: InitialAssignment = from_str(
 /// r#"<initialAssignment symbol="x">

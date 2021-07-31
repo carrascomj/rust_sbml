@@ -6,14 +6,14 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Debug, Serialize, Eq, PartialEq, Clone)]
 pub struct Math {
     #[serde(rename = "$value")]
-    content: MathNode,
+    pub content: MathNode,
 }
 
 /// Content identifier <ci>
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
 pub struct Apply {
     #[serde(rename = "$value")]
-    content: Vec<MathNode>,
+    pub content: Vec<MathNode>,
 }
 
 /// Content identifier <ci>
@@ -55,7 +55,7 @@ impl Default for NumberType {
 
 /// Base of a number (default to 10)
 #[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Clone)]
-struct Base(u32);
+pub struct Base(pub u32);
 
 impl Default for Base {
     fn default() -> Self {
@@ -68,15 +68,15 @@ impl Default for Base {
 #[serde(rename_all = "camelCase")]
 pub struct Cn {
     #[serde(rename = "$value")]
-    content: String,
+    pub content: String,
     #[serde(rename = "sbml:units")]
-    unit: Option<UnitSIdRef>,
+    pub unit: Option<UnitSIdRef>,
     #[serde(rename = "type", default)]
-    ci_type: NumberType,
+    pub cn_type: NumberType,
     #[serde(default)]
-    base: Base,
-    definition_url: Option<String>,
-    enconding: Option<String>,
+    pub base: Base,
+    pub definition_url: Option<String>,
+    pub encoding: Option<String>,
 }
 
 /// Main node of MathML
@@ -87,7 +87,12 @@ pub struct Cn {
 pub enum MathNode {
     Apply(Box<Apply>),
     Text(String),
-    Ci(Ci),
+    Ci {
+        #[serde(rename = "$value")]
+        content: String,
+        #[serde(rename = "type")]
+        ci_type: Option<String>,
+    },
     Csymbol {
         cd: Option<String>,
         encoding: Option<String>,
@@ -198,4 +203,10 @@ pub enum MathNode {
     Geq,
     Leq,
     Root,
+}
+
+impl MathNode {
+    pub fn apply(x: Vec<MathNode>) -> Self {
+        MathNode::Apply(Box::new(Apply { content: x }))
+    }
 }
