@@ -61,6 +61,6 @@ pub struct ListOfRules {
 
 #[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
 pub struct ListOfFunctionDefinitions {
-    #[serde(rename = "$value", default)]
-    pub rules: Vec<FunctionDefinition>,
+    #[serde(rename = "functionDefinition", default)]
+    pub function_definitions: Vec<FunctionDefinition>,
 }
