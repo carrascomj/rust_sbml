@@ -90,8 +90,8 @@ mod pyo;
 mod unit;
 
 pub use base_types::{
-    Compartment, Constraint, FunctionDefinition, InitialAssignment, Objective, Parameter, Reaction,
-    Rule, Species, SpeciesReference, Message
+    Compartment, Constraint, FunctionDefinition, InitialAssignment, Message, Objective, Parameter,
+    Reaction, Rule, Species, SpeciesReference,
 };
 pub use unit::{Unit, UnitSId, UnitSIdRef};
 
