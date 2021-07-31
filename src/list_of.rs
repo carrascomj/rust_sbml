@@ -43,7 +43,7 @@ pub struct ListOfInitialAssignments {
 
 #[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
 pub struct ListOfConstraints {
-    #[serde(rename = "constraints", default)]
+    #[serde(rename = "constraint", default)]
     pub constraints: Vec<Constraint>,
 }
 
