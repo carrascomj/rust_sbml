@@ -18,7 +18,7 @@ Add it to your Cargo.toml with no default features to avoid all
 
 ```toml
 [dependencies.rust_sbml]
-version = "0.3.0"
+version = "0.6.0"
 default_features=false
 ```
 
@@ -85,7 +85,7 @@ print(reaction.getListOfReactants())
   * .`getListOfProducts()` (id, name)
 * Capable of retrieving FBC bounds.
 * Published to pypi
-* _(Missing) Kinetic Laws_.
+* Kinetic Laws.
 * _(Missing) Metadata_.
 * Test suite with python calls.
 * Test suite with libsbml comparison trough cobrapy.
