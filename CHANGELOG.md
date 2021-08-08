@@ -1,5 +1,14 @@
 Next release
 ------------
+* ...
+
+
+0.6.1
+-----
+* Publish crate and upload multi-platform python wheels on CI tags.
+
+0.6.0
+-----
 * Naive implementation of MathML.
 * Add `<math>` attribute to `InitialAssignment`.
 * Implement `Rule` and `Function` base types.
