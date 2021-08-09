@@ -149,14 +149,14 @@ jobs:
             toolchain: nightly
             override: true
 
-        - name: Install python CI dependencies
+        - name: Install dependencies
           run: |
             python -m pip install --upgrade pip
-            pip install maturin pytest cobra
+            pip install poetry
+            poetry install
 
-        - name: Install with maturin
-          run: |
-            maturin build --release --no-sdist --strip
+        - name: Build Python package
+          run: poetry run maturin build --release --no-sdist --strip --interpreter python${{matrix.python_version}}
 
         - name: List wheels
           if: matrix.os == 'windows-latest'
@@ -167,7 +167,12 @@ jobs:
           run: find ./target/wheels/
 
         - name: Install wheels
-          run: pip install .
+          if:  matrix.os == 'windows-latest'
+          run: pip install --find-links=target\wheels rust_sbml
+
+        - name: Install wheels
+          if:  matrix.os != 'windows-latest'
+          run: pip install target/wheels/rust_sbml*.whl
 
         # - name: Release
         #   uses: softprops/action-gh-release@v1
@@ -180,4 +185,4 @@ jobs:
         - name: PyPi publish
           env:
             MATURIN_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-          run: maturin publish --username ${{ secrets.PYPI_USER }}
+          run: poetry run maturin publish --username ${{ secrets.PYPI_USER }}

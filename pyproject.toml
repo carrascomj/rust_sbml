@@ -1,6 +1,6 @@
 [project]
 name = "rust_sbml"
-version = "0.5.2"
+version = "0.6.1"
 description = "Python Bindings to rust_sbml"
 readme = "README.md"
 requires-python = ">=3.6"
@@ -25,6 +25,24 @@ classifiers = [
     "Programming Language :: Rust",
 ]
 
+[tool.poetry]
+name = "rust_sbml"
+version = "0.6.1"
+description = "Python Bindings to rust_sbml"
+authors = [
+  "Jorge Carrasco Muriel",
+]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/carrascomj/rust_sbml"
+keywords = ["parser", "sbml", "science", "bioinformatics"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
 [build-system]
 requires = ["maturin"]
 build-backend = "maturin"
+
+[tool.poetry.dev-dependencies]
+maturin = "==0.9.4"
