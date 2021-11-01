@@ -44,11 +44,13 @@ pub struct Rdf {
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
 pub struct RdfDescriptor {
-    #[serde(rename = "$unflatten=bqbiol:is", default)]
+    #[serde(rename = "$value", default)]
     pub inner: Vec<Bqbiol>,
 }
 
-/// TODO: requires custom Deserialize, Serialize. Right now, it is only parsing Is
+/// A heavily-hardcoded model qualifier enum for <bqbiol:VARIANT>
+///
+/// See <http://co.mbine.org/standards/qualifiers>
 ///
 /// # Example
 ///
@@ -61,37 +63,101 @@ pub struct RdfDescriptor {
 ///     </bqbiol:is>
 /// </rdf:RDF>
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
-#[serde(rename_all = "camelCase")]
-pub struct Bqbiol {
-    #[serde(skip, default)]
-    pub bq_type: BqbiolType,
-    #[serde(rename = "$unflatten=rdf:Bag", default)]
-    pub rdf_bag: RdfBag,
-}
-
-/// Model qualifier, see <http://co.mbine.org/standards/qualifiers>
+// }
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
-#[serde(rename_all = "camelCase")]
-pub enum BqbiolType {
-    Encodes,
-    HasPart,
-    HasProperty,
-    HasVersion,
-    Is,
-    IsDescribedBy,
-    IsEncodedBy,
-    IsHomologTo,
-    IsPartOf,
-    IsPropertyOf,
-    IsVersionOf,
-    OccursIn,
-    HasTaxon,
+pub enum Bqbiol {
+    #[serde(rename = "bqbiol:encodes")]
+    Encodes {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:hasPart")]
+    HasPart {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:encodes")]
+    HasProperty {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:hasVersion")]
+    HasVersion {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:is")]
+    Is {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isDescribedBy")]
+    IsDescribedBy {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isEncodedBy")]
+    IsEncodedBy {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isHomologTo")]
+    IsHomologTo {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isPartOf")]
+    IsPartOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isPropertyOf")]
+    IsPropertyOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:isVersionOf")]
+    IsVersionOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:occursIn")]
+    OccursIn {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqbiol:hasTaxon")]
+    HasTaxon {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
 }
 
-impl Default for BqbiolType {
+impl Bqbiol {
+    pub fn bag(&self) -> &RdfBag {
+        match self {
+            Bqbiol::Encodes { rdf_bag: x } => x,
+            Bqbiol::HasPart { rdf_bag: x } => x,
+            Bqbiol::HasProperty { rdf_bag: x } => x,
+            Bqbiol::HasVersion { rdf_bag: x } => x,
+            Bqbiol::Is { rdf_bag: x } => x,
+            Bqbiol::IsDescribedBy { rdf_bag: x } => x,
+            Bqbiol::IsEncodedBy { rdf_bag: x } => x,
+            Bqbiol::IsHomologTo { rdf_bag: x } => x,
+            Bqbiol::IsPartOf { rdf_bag: x } => x,
+            Bqbiol::IsPropertyOf { rdf_bag: x } => x,
+            Bqbiol::IsVersionOf { rdf_bag: x } => x,
+            Bqbiol::OccursIn { rdf_bag: x } => x,
+            Bqbiol::HasTaxon { rdf_bag: x } => x,
+        }
+    }
+}
+
+impl Default for Bqbiol {
     fn default() -> Self {
-        BqbiolType::Is
+        Bqbiol::Is {
+            rdf_bag: RdfBag::default(),
+        }
     }
 }
 
