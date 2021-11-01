@@ -72,6 +72,12 @@ pub struct Species {
     pub meta_id: Option<String>,
     pub sbo_term: Option<String>,
     pub compartment: String,
+    /// Species elemental composition
+    #[serde(rename = "fbc:chemicalFormula")]
+    pub formula: Option<String>,
+    /// The optional field charge takes an integer indicating the charge on the species (in terms of electrons, not the SI unit coulombs).
+    #[serde(rename = "fbc:charge")]
+    pub charge: Option<i32>,
     pub initial_concentration: Option<f64>,
     pub initial_amount: Option<f64>,
     pub substance_units: Option<UnitSIdRef>,

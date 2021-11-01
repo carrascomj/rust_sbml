@@ -44,16 +44,7 @@ fn read_model_raw_objective_succeeds() {
 fn read_abstraction_objective_succeeds() {
     let file_str = include_str!("EcoliCore.xml");
     let model = Model::parse(file_str).unwrap();
-    assert_eq!(
-        model
-            .objectives
-            .unwrap()
-            .iter()
-            .map(|reac_id| reac_id)
-            .next()
-            .unwrap(),
-        "R_BIOMASS_Ecoli_core_w_GAM"
-    );
+    assert_eq!(model.objectives.unwrap()[0], "R_BIOMASS_Ecoli_core_w_GAM");
 }
 
 #[test]
@@ -93,6 +84,14 @@ fn model_has_annotations() {
         model.annotation.as_ref().unwrap().into();
     println!("{:?}", annot);
     assert_eq!(annot["bigg.model"][0], "e_coli_core");
+}
+
+#[test]
+fn glc_retrieves_corect_formula() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = Model::parse(file_str).unwrap();
+    let rust_sbml::Species { formula, .. } = &model.species["M_glc__D_e"];
+    assert_eq!(formula.as_ref().unwrap(), "C6H12O6");
 }
 
 #[test]
