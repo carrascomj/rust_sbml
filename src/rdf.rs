@@ -21,6 +21,37 @@ impl Annotation {
     }
 }
 
+impl<'a> IntoIterator for &'a Annotation {
+    type Item = &'a str;
+    type IntoIter = AnnotationIterator<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        AnnotationIterator {
+            iter: match &self.rdf {
+                Some(rdf) => Box::new(
+                    rdf.description
+                        .inner
+                        .iter()
+                        .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str())),
+                ),
+                None => Box::new(std::iter::empty()),
+            },
+        }
+    }
+}
+
+pub struct AnnotationIterator<'a> {
+    iter: Box<dyn Iterator<Item = &'a str> + 'a>,
+}
+
+impl<'a> Iterator for AnnotationIterator<'a> {
+    type Item = &'a str;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next()
+    }
+}
+
 impl<'a> From<&'a Annotation> for HashMap<&'a str, Vec<&'a str>> {
     fn from(s: &'a Annotation) -> HashMap<&'a str, Vec<&'a str>> {
         s.rdf
