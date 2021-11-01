@@ -2,6 +2,11 @@ Next release
 ------------
 * ...
 
+0.7.0
+-----
+* Implement `rdf:Annotation` for `Species`, `Reaction` and `Model`, with a simple custom RDF implementation.
+* Parse `fbc:charge` and `fbc:chemicalFormula` for `Species`.
+
 
 0.6.1
 -----
