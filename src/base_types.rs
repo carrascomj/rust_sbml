@@ -1,8 +1,7 @@
 // use mathml::MathNode;
 use super::mathml::Math;
-use super::rdf::Rdf;
+use super::rdf::Annotation;
 use super::UnitSIdRef;
-use itertools::Itertools;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -83,52 +82,6 @@ pub struct Species {
     pub annotation: Option<Annotation>,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct Annotation {
-    #[serde(rename = "$unflatten=rdf:RDF")]
-    pub rdf: Option<Rdf>,
-}
-
-impl Annotation {
-    pub fn flatten(&self) -> Option<Vec<&str>> {
-        self.rdf.as_ref().map(|rdf| {
-            rdf.description
-                .inner
-                .iter()
-                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str()))
-                .collect()
-        })
-    }
-}
-
-impl<'a> std::convert::From<&'a Annotation> for std::collections::HashMap<&'a str, Vec<&'a str>> {
-    fn from(s: &'a Annotation) -> std::collections::HashMap<&'a str, Vec<&'a str>> {
-        s.rdf
-            .as_ref()
-            .map(|rdf| {
-                // self.rdf
-                rdf.description
-                    .inner
-                    .iter()
-                    .flat_map(|m| {
-                        m.bag()
-                            .rdf_lis
-                            .iter()
-                            .map(|li| li.resource.split('/').rev().take(2).collect::<Vec<&str>>())
-                    })
-                    .filter_map(|vec| {
-                        if vec.len() == 2 {
-                            Some((vec[1], vec[0]))
-                        } else {
-                            None
-                        }
-                    })
-                    .into_group_map()
-            })
-            .unwrap_or_default()
-    }
-}
 /// A Parameter is used in SBML to define a symbol associated with a value;
 /// this symbol can then be used in mathematical formulas in a model.
 ///

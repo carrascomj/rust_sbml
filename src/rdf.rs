@@ -1,4 +1,52 @@
+use itertools::Itertools;
 use serde::{Deserialize, Serialize};
+use std::{collections::HashMap, convert::From};
+
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Annotation {
+    #[serde(rename = "$unflatten=rdf:RDF")]
+    pub rdf: Option<Rdf>,
+}
+
+impl Annotation {
+    pub fn flatten(&self) -> Option<Vec<&str>> {
+        self.rdf.as_ref().map(|rdf| {
+            rdf.description
+                .inner
+                .iter()
+                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str()))
+                .collect()
+        })
+    }
+}
+
+impl<'a> From<&'a Annotation> for HashMap<&'a str, Vec<&'a str>> {
+    fn from(s: &'a Annotation) -> HashMap<&'a str, Vec<&'a str>> {
+        s.rdf
+            .as_ref()
+            .map(|rdf| {
+                rdf.description
+                    .inner
+                    .iter()
+                    .flat_map(|m| {
+                        m.bag()
+                            .rdf_lis
+                            .iter()
+                            .map(|li| li.resource.split('/').rev().take(2).collect::<Vec<&str>>())
+                    })
+                    .filter_map(|vec| {
+                        if vec.len() == 2 {
+                            Some((vec[1], vec[0]))
+                        } else {
+                            None
+                        }
+                    })
+                    .into_group_map()
+            })
+            .unwrap_or_default()
+    }
+}
 
 /// Rdf element from [xmlns:rdf](https://www.w3.org/TR/2014/REC-rdf-syntax-grammar-20140225/), tailored for BioModels.
 /// This is used in SBML to store annotations of [`crate::base_types::Species`], [`crate::base_types::Reaction`] and the [`crate::Model`]
