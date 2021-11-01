@@ -1,5 +1,6 @@
 // use mathml::MathNode;
 use super::mathml::Math;
+use super::rdf::Rdf;
 use super::UnitSIdRef;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
@@ -78,8 +79,55 @@ pub struct Species {
     pub boundary_condition: bool,
     pub constant: bool,
     pub conversion_factor: Option<String>,
+    pub annotation: Option<Annotation>,
 }
 
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Annotation {
+    #[serde(rename = "$unflatten=rdf:RDF")]
+    pub rdf: Option<Rdf>,
+}
+
+impl Annotation {
+    pub fn flatten(&self) -> Option<Vec<String>> {
+        self.rdf.as_ref().map(|rdf| {
+            rdf.description
+                .inner
+                .iter()
+                .flat_map(|m| m.rdf_bag.rdf_lis.iter().map(|li| li.resource.clone()))
+                .collect()
+        })
+    }
+}
+
+impl std::convert::From<&Annotation> for std::collections::HashMap<String, String> {
+    fn from(s: &Annotation) -> std::collections::HashMap<String, String> {
+        s.rdf
+            .as_ref()
+            .map(|rdf| {
+                // self.rdf
+                rdf.description
+                    .inner
+                    .iter()
+                    .flat_map(|m| {
+                        m.rdf_bag
+                            .rdf_lis
+                            .iter()
+                            .map(|li| li.resource.split('/').rev().take(2).collect::<Vec<&str>>())
+                    })
+                    .filter_map(|vec| {
+                        if vec.len() == 2 {
+                            Some((vec[1].to_string(), vec[0].to_string()))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+}
 /// A Parameter is used in SBML to define a symbol associated with a value;
 /// this symbol can then be used in mathematical formulas in a model.
 ///
@@ -268,6 +316,7 @@ pub struct Reaction {
     pub lower_bound: Option<String>,
     #[serde(rename = "fbc:lowerUpperBound")]
     pub upper_bound: Option<String>,
+    pub annotation: Option<Annotation>,
 }
 
 /// The FunctionDefinition object associates an identifier with a function

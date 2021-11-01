@@ -87,6 +87,7 @@ pub mod mathml;
 mod model;
 #[cfg(feature = "default")]
 mod pyo;
+pub mod rdf;
 mod unit;
 
 pub use base_types::{

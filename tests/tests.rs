@@ -57,6 +57,19 @@ fn read_abstraction_objective_succeeds() {
 }
 
 #[test]
+fn reaction_annotation_is_parsed() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = Model::parse(file_str).unwrap();
+    let annot: std::collections::HashMap<String, String> = model.reactions["R_ACALD"]
+        .annotation
+        .as_ref()
+        .unwrap()
+        .into();
+    println!("{:?}", annot);
+    assert_eq!(annot["bigg.reaction"], "ACALD");
+}
+
+#[test]
 fn test_constraints() {
     let example = include_str!("test_constraint.xml");
     let res = parse_document(example).unwrap();
