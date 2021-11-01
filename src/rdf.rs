@@ -33,8 +33,8 @@ use serde::{Deserialize, Serialize};
 /// )
 /// .unwrap();
 /// assert_eq!(species[0].annotation.as_ref().unwrap().flatten().unwrap().len(), 3);
-/// let annot: HashMap<String, String> = species[0].annotation.as_ref().unwrap().into();
-/// assert_eq!(annot["bigg"], "h")
+/// let annot: HashMap<String, Vec<String>> = species[0].annotation.as_ref().unwrap().into();
+/// assert_eq!(annot["bigg"][0], "h")
 /// ```
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
 pub struct Rdf {
