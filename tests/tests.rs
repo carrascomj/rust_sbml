@@ -86,6 +86,16 @@ fn model_has_more_species_annotations_species() {
 }
 
 #[test]
+fn model_has_annotations() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = Model::parse(file_str).unwrap();
+    let annot: std::collections::HashMap<&str, Vec<&str>> =
+        model.annotation.as_ref().unwrap().into();
+    println!("{:?}", annot);
+    assert_eq!(annot["bigg.model"][0], "e_coli_core");
+}
+
+#[test]
 fn test_constraints() {
     let example = include_str!("test_constraint.xml");
     let res = parse_document(example).unwrap();

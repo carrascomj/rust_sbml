@@ -5,6 +5,7 @@ use std::collections::HashMap;
 
 use super::base_types::{Compartment, Constraint, InitialAssignment, Parameter, Reaction, Species};
 use super::list_of::*;
+use super::rdf::Annotation;
 use super::{Unit, UnitSIdRef};
 
 /// SBML model as defined in the [SBML Level 3 Version 2 core](http://sbml.org/Documents/Specifications).
@@ -55,6 +56,7 @@ pub struct ModelRaw {
     pub list_of_objectives: Option<ListOfObjectives>,
     pub list_of_rules: Option<ListOfRules>,
     pub list_of_function_definitions: Option<ListOfFunctionDefinitions>,
+    pub annotation: Option<Annotation>,
 }
 
 impl ModelRaw {
@@ -141,6 +143,7 @@ pub struct Model {
     pub unit_definitions: Hl<HashMap<UnitSIdRef, Unit>>,
     pub constraints: Vec<Constraint>,
     pub objectives: Option<Vec<String>>,
+    pub annotation: Option<Annotation>,
 }
 
 impl Model {
@@ -278,6 +281,7 @@ impl Model {
             unit_definitions,
             constraints,
             objectives,
+            annotation: raw_model.annotation,
         })
     }
 }

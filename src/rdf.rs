@@ -210,6 +210,71 @@ pub enum Bqbiol {
         #[serde(rename = "$unflatten=rdf:Bag", default)]
         rdf_bag: RdfBag,
     },
+    #[serde(rename = "bqmodel:encodes")]
+    ModelEncodes {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:hasPart")]
+    ModelHasPart {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:encodes")]
+    ModelHasProperty {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:hasVersion")]
+    ModelHasVersion {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:is")]
+    ModelIs {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isDescribedBy")]
+    ModelIsDescribedBy {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isEncodedBy")]
+    ModelIsEncodedBy {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isHomologTo")]
+    ModelIsHomologTo {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isPartOf")]
+    ModelIsPartOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isPropertyOf")]
+    ModelIsPropertyOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:isVersionOf")]
+    ModelIsVersionOf {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:occursIn")]
+    ModelOccursIn {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
+    #[serde(rename = "bqmodel:hasTaxon")]
+    ModelHasTaxon {
+        #[serde(rename = "$unflatten=rdf:Bag", default)]
+        rdf_bag: RdfBag,
+    },
 }
 
 impl Bqbiol {
@@ -228,6 +293,19 @@ impl Bqbiol {
             Bqbiol::IsVersionOf { rdf_bag: x } => x,
             Bqbiol::OccursIn { rdf_bag: x } => x,
             Bqbiol::HasTaxon { rdf_bag: x } => x,
+            Bqbiol::ModelEncodes { rdf_bag: x } => x,
+            Bqbiol::ModelHasPart { rdf_bag: x } => x,
+            Bqbiol::ModelHasProperty { rdf_bag: x } => x,
+            Bqbiol::ModelHasVersion { rdf_bag: x } => x,
+            Bqbiol::ModelIs { rdf_bag: x } => x,
+            Bqbiol::ModelIsDescribedBy { rdf_bag: x } => x,
+            Bqbiol::ModelIsEncodedBy { rdf_bag: x } => x,
+            Bqbiol::ModelIsHomologTo { rdf_bag: x } => x,
+            Bqbiol::ModelIsPartOf { rdf_bag: x } => x,
+            Bqbiol::ModelIsPropertyOf { rdf_bag: x } => x,
+            Bqbiol::ModelIsVersionOf { rdf_bag: x } => x,
+            Bqbiol::ModelOccursIn { rdf_bag: x } => x,
+            Bqbiol::ModelHasTaxon { rdf_bag: x } => x,
         }
     }
 }
