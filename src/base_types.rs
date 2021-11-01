@@ -2,6 +2,7 @@
 use super::mathml::Math;
 use super::rdf::Rdf;
 use super::UnitSIdRef;
+use itertools::Itertools;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -95,14 +96,14 @@ impl Annotation {
             rdf.description
                 .inner
                 .iter()
-                .flat_map(|m| m.rdf_bag.rdf_lis.iter().map(|li| li.resource.clone()))
+                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.clone()))
                 .collect()
         })
     }
 }
 
-impl std::convert::From<&Annotation> for std::collections::HashMap<String, String> {
-    fn from(s: &Annotation) -> std::collections::HashMap<String, String> {
+impl std::convert::From<&Annotation> for std::collections::HashMap<String, Vec<String>> {
+    fn from(s: &Annotation) -> std::collections::HashMap<String, Vec<String>> {
         s.rdf
             .as_ref()
             .map(|rdf| {
@@ -111,7 +112,7 @@ impl std::convert::From<&Annotation> for std::collections::HashMap<String, Strin
                     .inner
                     .iter()
                     .flat_map(|m| {
-                        m.rdf_bag
+                        m.bag()
                             .rdf_lis
                             .iter()
                             .map(|li| li.resource.split('/').rev().take(2).collect::<Vec<&str>>())
@@ -123,7 +124,7 @@ impl std::convert::From<&Annotation> for std::collections::HashMap<String, Strin
                             None
                         }
                     })
-                    .collect()
+                    .into_group_map()
             })
             .unwrap_or_default()
     }
