@@ -10,7 +10,7 @@
 //!
 //! ```toml
 //! [dependencies.rust_sbml]
-//! version = "0.6.0"
+//! version = "0.7.0"
 //! default_features=false
 //! ```
 //!
@@ -77,8 +77,8 @@
 //!   * .`getListOfProducts()` (id, name)
 //! * Capable of retrieving FBC bounds.
 //! * Published to pypi
-//! * Kinetic Laws.
-//! * _(Missing) Metadata_.
+//! * Kinetic Laws, with naive mathml tailored for SBML.
+//! * Metadata, with naive rdf tailored for SBML.
 //! * Test suite with python calls.
 //! * Test suite with libsbml comparison trough cobrapy.
 mod base_types;
