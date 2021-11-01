@@ -60,7 +60,7 @@ fn read_abstraction_objective_succeeds() {
 fn reaction_annotation_is_parsed() {
     let file_str = include_str!("EcoliCore.xml");
     let model = Model::parse(file_str).unwrap();
-    let annot: std::collections::HashMap<String, Vec<String>> = model.reactions["R_ACALD"]
+    let annot: std::collections::HashMap<&str, Vec<&str>> = model.reactions["R_ACALD"]
         .annotation
         .as_ref()
         .unwrap()

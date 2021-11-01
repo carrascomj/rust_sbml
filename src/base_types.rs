@@ -91,19 +91,19 @@ pub struct Annotation {
 }
 
 impl Annotation {
-    pub fn flatten(&self) -> Option<Vec<String>> {
+    pub fn flatten(&self) -> Option<Vec<&str>> {
         self.rdf.as_ref().map(|rdf| {
             rdf.description
                 .inner
                 .iter()
-                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.clone()))
+                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str()))
                 .collect()
         })
     }
 }
 
-impl std::convert::From<&Annotation> for std::collections::HashMap<String, Vec<String>> {
-    fn from(s: &Annotation) -> std::collections::HashMap<String, Vec<String>> {
+impl<'a> std::convert::From<&'a Annotation> for std::collections::HashMap<&'a str, Vec<&'a str>> {
+    fn from(s: &'a Annotation) -> std::collections::HashMap<&'a str, Vec<&'a str>> {
         s.rdf
             .as_ref()
             .map(|rdf| {
@@ -119,7 +119,7 @@ impl std::convert::From<&Annotation> for std::collections::HashMap<String, Vec<S
                     })
                     .filter_map(|vec| {
                         if vec.len() == 2 {
-                            Some((vec[1].to_string(), vec[0].to_string()))
+                            Some((vec[1], vec[0]))
                         } else {
                             None
                         }
