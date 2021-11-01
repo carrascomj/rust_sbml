@@ -49,7 +49,7 @@ fn read_abstraction_objective_succeeds() {
             .objectives
             .unwrap()
             .iter()
-            .map(|reac_id| reac_id.to_owned())
+            .map(|reac_id| reac_id)
             .next()
             .unwrap(),
         "R_BIOMASS_Ecoli_core_w_GAM"
@@ -67,6 +67,22 @@ fn reaction_annotation_is_parsed() {
         .into();
     println!("{:?}", annot);
     assert_eq!(annot["bigg.reaction"][0], "ACALD");
+}
+
+#[test]
+fn model_has_more_species_annotations_species() {
+    let file_str = include_str!("EcoliCore.xml");
+    let model = Model::parse(file_str).unwrap();
+    let annot_len = model
+        .species
+        .iter()
+        .map(|(_, sp)| match sp.annotation.as_ref() {
+            Some(rdf) => rdf.into_iter().count(),
+            None => 0,
+        })
+        .sum::<usize>();
+    println!("all annots: {:?}", annot_len);
+    assert!(annot_len > model.species.len());
 }
 
 #[test]
