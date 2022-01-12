@@ -106,6 +106,7 @@ pub enum MathNode {
         #[serde(rename = "$value")]
         children: Vec<MathNode>,
     },
+    Notanumber,
     Bvar,
     // rest of operations
     Factorial,
