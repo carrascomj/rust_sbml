@@ -198,11 +198,11 @@ pub struct ListOfSpeciesReferences {
 /// that are only accessible within the scope of that particular reaction.
 #[derive(Debug, PartialEq, Clone, Deserialize, Serialize)]
 pub struct LocalParameter {
-    id: String,
+    pub id: String,
     #[serde(rename = "sboTerm")]
     sbo_term: Option<String>,
-    value: Option<f32>,
-    units: UnitSIdRef,
+    pub value: Option<f32>,
+    pub units: Option<UnitSIdRef>,
 }
 
 #[derive(Debug, PartialEq, Clone, Default, Deserialize, Serialize)]
@@ -219,7 +219,7 @@ pub struct KineticLaw {
     math: Math,
     id: Option<String>,
     sbo_term: Option<String>,
-    list_of_local_parameters: ListOfLocalParameters,
+    pub list_of_local_parameters: ListOfLocalParameters,
 }
 
 /// A reaction in SBML represents any kind of process that can change the
