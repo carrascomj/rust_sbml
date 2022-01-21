@@ -91,8 +91,8 @@ pub mod rdf;
 mod unit;
 
 pub use base_types::{
-    Compartment, Constraint, FunctionDefinition, InitialAssignment, Message, Objective, Parameter,
-    Reaction, Rule, Species, SpeciesReference,
+    Compartment, Constraint, FunctionDefinition, InitialAssignment, LocalParameter, Message,
+    Objective, Parameter, Reaction, Rule, Species, SpeciesReference,
 };
 pub use unit::{Unit, UnitSId, UnitSIdRef};
 
