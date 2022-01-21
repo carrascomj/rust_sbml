@@ -220,6 +220,8 @@ pub struct KineticLaw {
     id: Option<String>,
     sbo_term: Option<String>,
     pub list_of_local_parameters: ListOfLocalParameters,
+    // TODO: hide under sabiork
+    pub annotation: Option<Annotation>,
 }
 
 /// A reaction in SBML represents any kind of process that can change the
