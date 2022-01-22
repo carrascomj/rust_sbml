@@ -81,18 +81,18 @@
 //! * Metadata, with naive rdf tailored for SBML.
 //! * Test suite with python calls.
 //! * Test suite with libsbml comparison trough cobrapy.
+pub mod annotation;
 mod base_types;
 mod list_of;
 pub mod mathml;
 mod model;
 #[cfg(feature = "default")]
 mod pyo;
-pub mod rdf;
 mod unit;
 
 pub use base_types::{
-    Compartment, Constraint, FunctionDefinition, InitialAssignment, LocalParameter, Message,
-    Objective, Parameter, Reaction, Rule, Species, SpeciesReference,
+    Compartment, Constraint, FunctionDefinition, InitialAssignment, KineticLaw, LocalParameter,
+    Message, Objective, Parameter, Reaction, Rule, Species, SpeciesReference,
 };
 pub use unit::{Unit, UnitSId, UnitSIdRef};
 
