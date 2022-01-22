@@ -1,6 +1,6 @@
 // use mathml::MathNode;
+use super::annotation::Annotation;
 use super::mathml::Math;
-use super::rdf::Annotation;
 use super::UnitSIdRef;
 #[cfg(feature = "default")]
 use pyo3::prelude::*;
@@ -220,7 +220,6 @@ pub struct KineticLaw {
     id: Option<String>,
     sbo_term: Option<String>,
     pub list_of_local_parameters: ListOfLocalParameters,
-    // TODO: hide under sabiork
     pub annotation: Option<Annotation>,
 }
 
