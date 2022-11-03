@@ -1,6 +1,7 @@
 Next release
 ------------
-* ...
+* Allow deserialization of SabioRK's SBML documents behind a feature flag.
+* Deserialize any not-implemented RDF field under a Other unit variant.
 
 0.7.0
 -----
