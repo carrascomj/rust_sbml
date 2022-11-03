@@ -79,7 +79,7 @@ struct Sbml {
 
 /// Bucket struct to hold all units defined on the top level of
 /// [`ModelRaw`].
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, Default, PartialEq, Eq)]
 pub struct ModelUnits {
     pub substance_units: Option<UnitSIdRef>,
     pub time_units: Option<UnitSIdRef>,

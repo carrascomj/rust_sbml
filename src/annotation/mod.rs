@@ -5,7 +5,7 @@ use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::From};
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Annotation {
     #[serde(rename = "$unflatten=rdf:RDF")]

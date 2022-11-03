@@ -138,7 +138,7 @@ pub struct Parameter {
 /// "#).unwrap();
 /// assert_eq!(initial_assg.symbol, String::from("x"));
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct InitialAssignment {
     pub id: Option<String>,
     pub symbol: String,
@@ -303,7 +303,7 @@ pub struct Reaction {
 ///
 /// assert_eq!(function.id, "pow3");
 /// ```
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
+#[derive(Debug, PartialEq, Eq, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct FunctionDefinition {
     #[serde(rename = "$value")]
@@ -346,7 +346,7 @@ pub struct FunctionDefinition {
 ///     panic!("Rule was not correctly parsed!")
 /// }
 /// ```
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
+#[derive(Debug, PartialEq, Eq, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub enum Rule {
     /// $0 = f(W)$
@@ -369,7 +369,7 @@ pub enum Rule {
 }
 
 /// A XML `<message>` node.
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 #[serde(rename = "message")]
 pub struct Message {
     #[serde(rename = "$value")]
@@ -407,7 +407,7 @@ pub struct Message {
 /// assert_eq!(constraint.message.unwrap().content.as_str(), "Species S1 is out of range.");
 /// assert!(constraint.math.is_some())
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Default, Clone)]
 pub struct Constraint {
     pub math: Option<Math>,
     pub message: Option<Message>,

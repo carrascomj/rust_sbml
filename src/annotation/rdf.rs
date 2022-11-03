@@ -36,13 +36,13 @@ use serde::{Deserialize, Serialize};
 /// let annot: HashMap<&str, Vec<&str>> = species[0].annotation.as_ref().unwrap().into();
 /// assert_eq!(annot["bigg"][0], "h")
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct Rdf {
     #[serde(rename = "$unflatten=rdf:Description", default)]
     pub description: RdfDescriptor,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct RdfDescriptor {
     #[serde(rename = "$value", default)]
     pub inner: Vec<Bqbiol>,
@@ -64,7 +64,7 @@ pub struct RdfDescriptor {
 /// </rdf:RDF>
 /// ```
 // }
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub enum Bqbiol {
     #[serde(rename = "bqbiol:encodes")]
     Encodes {
@@ -240,14 +240,14 @@ impl Default for Bqbiol {
 }
 
 /// Container of [`rdf:li`](`RdfLi`).
-#[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct RdfBag {
     #[serde(rename = "$unflatten=rdf:li", default)]
     pub rdf_lis: Vec<RdfLi>,
 }
 
 /// An element in a [`rdf:Bag`](`RdfBag`) with a resource.
-#[derive(Debug, PartialEq, Clone, Default, Deserialize, Serialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Default, Deserialize, Serialize)]
 pub struct RdfLi {
     #[serde(rename = "rdf:resource")]
     pub resource: String,
