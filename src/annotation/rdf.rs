@@ -63,7 +63,13 @@ pub struct RdfDescriptor {
 ///     </bqbiol:is>
 /// </rdf:RDF>
 /// ```
-// }
+/// }
+///
+/// # Warnings
+///
+/// Some documents may use namespaces not covered by `[rust_sbml::annotation::Annotation]`.
+/// To avoid deserialization errors, those are gathered into `[Bqbiol::Unit]` (which
+/// is a bit hacky).
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub enum Bqbiol {
     #[serde(rename = "bqbiol:encodes")]
@@ -196,37 +202,41 @@ pub enum Bqbiol {
         #[serde(rename = "$unflatten=rdf:Bag", default)]
         rdf_bag: RdfBag,
     },
+    /// This is to allow any not covered annotation like dcterms
+    #[serde(other)]
+    Other,
 }
 
 impl Bqbiol {
-    pub fn bag(&self) -> &RdfBag {
+    pub fn bag(&self) -> Option<&RdfBag> {
         match self {
-            Bqbiol::Encodes { rdf_bag: x } => x,
-            Bqbiol::HasPart { rdf_bag: x } => x,
-            Bqbiol::HasProperty { rdf_bag: x } => x,
-            Bqbiol::HasVersion { rdf_bag: x } => x,
-            Bqbiol::Is { rdf_bag: x } => x,
-            Bqbiol::IsDescribedBy { rdf_bag: x } => x,
-            Bqbiol::IsEncodedBy { rdf_bag: x } => x,
-            Bqbiol::IsHomologTo { rdf_bag: x } => x,
-            Bqbiol::IsPartOf { rdf_bag: x } => x,
-            Bqbiol::IsPropertyOf { rdf_bag: x } => x,
-            Bqbiol::IsVersionOf { rdf_bag: x } => x,
-            Bqbiol::OccursIn { rdf_bag: x } => x,
-            Bqbiol::HasTaxon { rdf_bag: x } => x,
-            Bqbiol::ModelEncodes { rdf_bag: x } => x,
-            Bqbiol::ModelHasPart { rdf_bag: x } => x,
-            Bqbiol::ModelHasProperty { rdf_bag: x } => x,
-            Bqbiol::ModelHasVersion { rdf_bag: x } => x,
-            Bqbiol::ModelIs { rdf_bag: x } => x,
-            Bqbiol::ModelIsDescribedBy { rdf_bag: x } => x,
-            Bqbiol::ModelIsEncodedBy { rdf_bag: x } => x,
-            Bqbiol::ModelIsHomologTo { rdf_bag: x } => x,
-            Bqbiol::ModelIsPartOf { rdf_bag: x } => x,
-            Bqbiol::ModelIsPropertyOf { rdf_bag: x } => x,
-            Bqbiol::ModelIsVersionOf { rdf_bag: x } => x,
-            Bqbiol::ModelOccursIn { rdf_bag: x } => x,
-            Bqbiol::ModelHasTaxon { rdf_bag: x } => x,
+            Bqbiol::Encodes { rdf_bag: x } => Some(x),
+            Bqbiol::HasPart { rdf_bag: x } => Some(x),
+            Bqbiol::HasProperty { rdf_bag: x } => Some(x),
+            Bqbiol::HasVersion { rdf_bag: x } => Some(x),
+            Bqbiol::Is { rdf_bag: x } => Some(x),
+            Bqbiol::IsDescribedBy { rdf_bag: x } => Some(x),
+            Bqbiol::IsEncodedBy { rdf_bag: x } => Some(x),
+            Bqbiol::IsHomologTo { rdf_bag: x } => Some(x),
+            Bqbiol::IsPartOf { rdf_bag: x } => Some(x),
+            Bqbiol::IsPropertyOf { rdf_bag: x } => Some(x),
+            Bqbiol::IsVersionOf { rdf_bag: x } => Some(x),
+            Bqbiol::OccursIn { rdf_bag: x } => Some(x),
+            Bqbiol::HasTaxon { rdf_bag: x } => Some(x),
+            Bqbiol::ModelEncodes { rdf_bag: x } => Some(x),
+            Bqbiol::ModelHasPart { rdf_bag: x } => Some(x),
+            Bqbiol::ModelHasProperty { rdf_bag: x } => Some(x),
+            Bqbiol::ModelHasVersion { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIs { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsDescribedBy { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsEncodedBy { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsHomologTo { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsPartOf { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsPropertyOf { rdf_bag: x } => Some(x),
+            Bqbiol::ModelIsVersionOf { rdf_bag: x } => Some(x),
+            Bqbiol::ModelOccursIn { rdf_bag: x } => Some(x),
+            Bqbiol::ModelHasTaxon { rdf_bag: x } => Some(x),
+            _ => None,
         }
     }
 }

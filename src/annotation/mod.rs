@@ -21,7 +21,8 @@ impl Annotation {
             rdf.description
                 .inner
                 .iter()
-                .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str()))
+                .filter_map(|m| m.bag())
+                .flat_map(|bag| bag.rdf_lis.iter().map(|li| li.resource.as_str()))
                 .collect()
         })
     }
@@ -38,7 +39,8 @@ impl<'a> IntoIterator for &'a Annotation {
                     rdf.description
                         .inner
                         .iter()
-                        .flat_map(|m| m.bag().rdf_lis.iter().map(|li| li.resource.as_str())),
+                        .filter_map(|m| m.bag())
+                        .flat_map(|bag| bag.rdf_lis.iter().map(|li| li.resource.as_str())),
                 ),
                 None => Box::new(std::iter::empty()),
             },
@@ -66,9 +68,9 @@ impl<'a> From<&'a Annotation> for HashMap<&'a str, Vec<&'a str>> {
                 rdf.description
                     .inner
                     .iter()
-                    .flat_map(|m| {
-                        m.bag()
-                            .rdf_lis
+                    .filter_map(|m| m.bag())
+                    .flat_map(|bag| {
+                        bag.rdf_lis
                             .iter()
                             .map(|li| li.resource.split('/').rev().take(2).collect::<Vec<&str>>())
                     })
