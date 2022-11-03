@@ -35,13 +35,13 @@ pub struct ListOfParameters {
     pub parameters: Vec<Parameter>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Default, Clone)]
 pub struct ListOfInitialAssignments {
     #[serde(rename = "initialAssigment", default)]
     pub initial_assignments: Vec<InitialAssignment>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Default, Clone)]
 pub struct ListOfConstraints {
     #[serde(rename = "constraint", default)]
     pub constraints: Vec<Constraint>,
@@ -53,13 +53,13 @@ pub struct ListOfObjectives {
     pub objectives: Vec<Objective>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Default, Clone)]
 pub struct ListOfRules {
     #[serde(rename = "$value", default)]
     pub rules: Vec<Rule>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Default, Clone)]
 pub struct ListOfFunctionDefinitions {
     #[serde(rename = "functionDefinition", default)]
     pub function_definitions: Vec<FunctionDefinition>,

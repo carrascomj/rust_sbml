@@ -48,7 +48,8 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: -- -D warnings
+          # see https://github.com/rust-lang/rust-clippy/issues/8971
+          args: -- -D warnings -A clippy::borrow_deref_ref
   build:
     runs-on: ubuntu-latest
     steps:
